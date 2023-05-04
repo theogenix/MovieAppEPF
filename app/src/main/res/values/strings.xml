@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">MovieAppEpf</string>
+
+
+    <!--Page d'accueil -->
+
+    <string name="homePageTitle"> EPF Movie App </string>
+    <string name="homePageSearchMovieSection"> Rechercher un film</string>
+    <string name="homePageFavoriteSection">Mes films favoris</string>
+
+
+
+
 </resources>
