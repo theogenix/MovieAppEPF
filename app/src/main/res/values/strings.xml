@@ -7,6 +7,8 @@
     <string name="homePageTitle"> EPF Movie App </string>
     <string name="homePageSearchMovieSection"> Rechercher un film</string>
     <string name="homePageFavoriteSection">Mes films favoris</string>
+    <string name="homePageMovieName">Nom du film</string>
+    <string name="homePageMovieDescription">Description du film</string>
 
 
 
