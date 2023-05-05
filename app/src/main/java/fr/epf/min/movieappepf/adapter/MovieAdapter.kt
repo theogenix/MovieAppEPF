@@ -1,14 +1,24 @@
 package fr.epf.min.movieappepf.adapter
 
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowId
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import fr.epf.min.movieappepf.MainActivity
+import fr.epf.min.movieappepf.MovieModel
 import fr.epf.min.movieappepf.R
 
-class MovieAdapter (private val layoutId: Int):RecyclerView.Adapter<MovieAdapter.ViewHolder>(){
+class MovieAdapter (
+    private val context:MainActivity,
+    private val movieList:List<MovieModel>,
+    private val layoutId: Int
+
+    ):RecyclerView.Adapter<MovieAdapter.ViewHolder>(){
 
 
     // boite pour ranger tous les composants à controler
@@ -17,6 +27,9 @@ class MovieAdapter (private val layoutId: Int):RecyclerView.Adapter<MovieAdapter
         //image du film
 
         val movieImage=view.findViewById<ImageView>(R.id.image_item)
+        val movieName:TextView?=view.findViewById(R.id.name_item)
+        val movieDescription:TextView?=view.findViewById(R.id.description_item)
+        val starIcon=view.findViewById<ImageView>(R.id.star_icon)
 
 
 
@@ -28,9 +41,34 @@ class MovieAdapter (private val layoutId: Int):RecyclerView.Adapter<MovieAdapter
         return ViewHolder(view)
     }
 
-    override fun getItemCount(): Int =5
+    override fun getItemCount(): Int =movieList.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        // recuperer les infos du film
+
+        val currentMovie=movieList[position]
+
+
+
+        // utiliser dépendances glide pour récup image a partir de son url
+        Glide.with(context).load(Uri.parse(currentMovie.imageUrl)).into(holder.movieImage)
+        // mettre à jour nom du film
+
+        holder.movieName?.text=currentMovie.name
+        // mettre à jour description du film
+        holder.movieDescription?.text=currentMovie.description
+
+        // verifier si le film a ete like ou non
+        if (holder.starIcon != null) {
+            if (currentMovie.liked){
+                holder.starIcon.setImageResource(R.drawable.ic_star)
+            }else{
+                holder.starIcon.setImageResource(R.drawable.ic_unstar)
+            }
+
+        }
+
+
     }
 
 }

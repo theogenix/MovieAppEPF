@@ -14,8 +14,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-
         android:src="@drawable/starwars"
+        />
+    <ImageView
+        android:id="@+id/star_icon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_unstar"
+        android:layout_margin="@dimen/defaultMarginComponent"
+        app:tint="@color/purple_200"
 
 
         />
