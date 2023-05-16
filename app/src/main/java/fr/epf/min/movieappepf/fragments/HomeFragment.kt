@@ -59,6 +59,14 @@ class HomeFragment(
                 false
         )
         )
+        movieList.add(
+            MovieModel(
+            "Ice Age",
+            "Anime",
+                "https://static.fnac-static.com/multimedia/Images/A8/A8/B1/47/4698536-1505-1505-1/tsp20180314141735/L-Age-De-Glace-4-AFFICHE-CINEMA-ORIGINALE.jpg",
+                false
+        )
+        )
 
 
         // recuperer le recycler view
