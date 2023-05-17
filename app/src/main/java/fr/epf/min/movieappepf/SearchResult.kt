@@ -1,11 +1,15 @@
 package fr.epf.min.movieappepf
 
 data class SearchResult(
+    val results: List<Movie>
+)
+
+data class Movie(
     val poster_path: String?,
     val adult: Boolean,
     val overview: String,
     val release_date: String,
-    val genre_ids: List<Int>,
+    //val genre_ids: List<Int>,
     val id: Int,
     val original_title: String,
     val original_language: String,
@@ -16,4 +20,5 @@ data class SearchResult(
     val video: Boolean,
     val vote_average: Double
 )
+
 
