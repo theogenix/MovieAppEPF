@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">MovieAppEpf</string>
 
+    <string name="bottom_home_item">Accueil</string>
+    <string name="bottom_search_item">Recherche</string>
+
 
     <!--Page d'accueil -->
 

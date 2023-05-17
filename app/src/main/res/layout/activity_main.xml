@@ -13,27 +13,18 @@
         android:text="@string/app_name"
         android:layout_marginLeft="@dimen/defaultMargin"
         android:layout_marginTop="@dimen/defaultMargin"
-
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        style="@style/DefaultTexteStyle"
-
         />
 
     <TextView
         android:id="@+id/page_title"
-        style="@style/DefaultTexteStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:text="@string/homePageTitle"
         app:layout_constraintStart_toStartOf="@+id/app_title"
-
         app:layout_constraintTop_toBottomOf="@+id/app_title"
-
         />
-
-
 
    <FrameLayout
        android:id="@+id/fragment_container"
@@ -41,17 +32,18 @@
        android:layout_height="match_parent"
        android:background="@color/purple_200"
        android:layout_marginTop="100dp"
-
-
-
-
        />
 
-
-
-
-
-
-
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/navigation_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/teal_200"
+        app:layout_constraintBottom_toBottomOf="@+id/fragment_container"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_navigation_menu"
+        app:itemIconTint="@color/icon_tint_colors"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
