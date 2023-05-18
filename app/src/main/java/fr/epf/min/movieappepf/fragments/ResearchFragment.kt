@@ -98,7 +98,7 @@ class ResearchFragment : Fragment() {
                             // Vérifier si des films ont été trouvés
                             if (movies.isNotEmpty()) {
                                 // Afficher le fragment ResultFragment avec les données du premier film
-                                showMovieDetails(movies.first())
+                                showMovieDetails(movies)
 
                             }
                         } else {
@@ -127,42 +127,40 @@ class ResearchFragment : Fragment() {
     }
 
     // Méthode pour afficher les résultats dans ResultFragment
-    private fun showMovieDetails(movie: Movie) {
-        val resultFragment = parentFragmentManager.findFragmentById(R.id.fragment_container) as? ResultFragment
+    private fun showMovieDetails(movieList: List<Movie>) {
+        for (movie in movieList) {
+            val resultFragment = parentFragmentManager.findFragmentById(R.id.fragment_container) as? ResultFragment
 
-        if (resultFragment != null) {
-            // Le fragment ResultFragment est déjà attaché, mettre à jour ses données
-            val bundle = Bundle()
-            bundle.putString("title", movie.title)
-            bundle.putString("poster_path", movie.poster_path)
-            bundle.putString("overview", movie.overview)
-            bundle.putString("release_date", movie.release_date)
-            //bundle.putIntArray("genre_ids", movie.genre_ids.toIntArray())
-            bundle.putDouble("popularity", movie.popularity)
-            bundle.putInt("vote_count", movie.vote_count)
-            bundle.putDouble("vote_average", movie.vote_average)
+            if (resultFragment != null) {
+                // Le fragment ResultFragment est déjà attaché, mettre à jour ses données
+                val bundle = createMovieBundle(movie)
+                resultFragment.arguments = bundle
+            } else {
+                // Le fragment ResultFragment n'est pas encore attaché, créer une nouvelle instance
+                val newResultFragment = ResultFragment()
+                val bundle = createMovieBundle(movie)
+                newResultFragment.arguments = bundle
 
-            resultFragment.arguments = bundle
-        } else {
-            // Le fragment ResultFragment n'est pas encore attaché, créer une nouvelle instance
-            val newResultFragment = ResultFragment()
-
-            val bundle = Bundle()
-            bundle.putString("title", movie.title)
-            bundle.putString("poster_path", movie.poster_path)
-            bundle.putString("overview", movie.overview)
-            bundle.putString("release_date", movie.release_date)
-            //bundle.putIntArray("genre_ids", movie.genre_ids.toIntArray())
-            bundle.putDouble("popularity", movie.popularity)
-            bundle.putInt("vote_count", movie.vote_count)
-            bundle.putDouble("vote_average", movie.vote_average)
-
-            newResultFragment.arguments = bundle
-
-            // Remplacer le fragment actuel par le nouveau ResultFragment
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, newResultFragment)
-                .commit()
+                // Ajouter le nouveau ResultFragment sans remplacer les fragments existants
+                parentFragmentManager.beginTransaction()
+                    .add(R.id.fragment_container, newResultFragment)
+                    .commit()
+            }
         }
     }
+
+    private fun createMovieBundle(movie: Movie): Bundle {
+        val bundle = Bundle()
+        bundle.putString("title", movie.title)
+        bundle.putString("poster_path", movie.poster_path)
+        bundle.putString("overview", movie.overview)
+        bundle.putString("release_date", movie.release_date)
+        //bundle.putIntArray("genre_ids", movie.genre_ids.toIntArray())
+        bundle.putDouble("popularity", movie.popularity)
+        bundle.putInt("vote_count", movie.vote_count)
+        bundle.putDouble("vote_average", movie.vote_average)
+        return bundle
+    }
+
+
 }
