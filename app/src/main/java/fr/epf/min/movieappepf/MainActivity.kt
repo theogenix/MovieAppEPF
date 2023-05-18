@@ -7,6 +7,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import fr.epf.min.movieappepf.fragments.HomeFragment
 import fr.epf.min.movieappepf.fragments.ResearchFragment
 import android.util.Log
+import fr.epf.min.movieappepf.fragments.QrcodeFragment
 
 
 class MainActivity : AppCompatActivity() {
@@ -29,6 +30,10 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.search_bar -> {
                     loadFragment(ResearchFragment())
+                    true
+                }
+                R.id.qr_code -> {
+                    loadFragment(QrcodeFragment())
                     true
                 }
                 else ->{
