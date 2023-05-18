@@ -22,7 +22,7 @@ class ResultFragment : Fragment() {
     private lateinit var voteCountTextView: TextView
     private lateinit var voteAverageTextView: TextView
 
-    //creer la vue du fragment a partir du xml fragment_results
+    //creation de la vue du fragment à partir du xml fragment_results
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,7 +47,7 @@ class ResultFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Récupérez les données transmises depuis le Bundle
+        // Récupération des données transmises depuis le Bundle
         val title = arguments?.getString("title")
         val posterPath = arguments?.getString("poster_path")
         val overview = arguments?.getString("overview")
@@ -66,7 +66,7 @@ class ResultFragment : Fragment() {
         voteCountTextView.text = voteCount.toString()
         voteAverageTextView.text = voteAverage.toString()
 
-        // Charger l'image à partir de l'URL du posterPath
+        // Chargement de l'image à partir de l'URL du posterPath
         if (!posterPath.isNullOrEmpty()) {
             val fullPosterPath = "https://image.tmdb.org/t/p/original$posterPath"
             Glide.with(requireContext())

@@ -127,8 +127,6 @@ class ResearchFragment : Fragment() {
     }
 
     // Méthode pour afficher les résultats dans ResultFragment
-    // Dans votre fonction showMovieDetails
-
     private fun showMovieDetails(movieList: List<Movie>) {
         // Créer un nouveau fragment StackFragment
         val stackFragment = StackFragment()
@@ -153,8 +151,6 @@ class ResearchFragment : Fragment() {
         }
     }
 
-
-
     private fun createMovieBundle(movie: Movie): Bundle {
         val bundle = Bundle()
         bundle.putString("title", movie.title)
@@ -167,6 +163,4 @@ class ResearchFragment : Fragment() {
         bundle.putDouble("vote_average", movie.vote_average)
         return bundle
     }
-
-
 }

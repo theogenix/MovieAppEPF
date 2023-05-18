@@ -23,9 +23,6 @@
         android:src="@drawable/ic_unstar"
         android:layout_margin="@dimen/defaultMarginComponent"
         app:tint="@color/purple_200"
-
-
         />
-
 
 </androidx.cardview.widget.CardView>
