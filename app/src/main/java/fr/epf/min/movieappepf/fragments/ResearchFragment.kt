@@ -127,27 +127,33 @@ class ResearchFragment : Fragment() {
     }
 
     // Méthode pour afficher les résultats dans ResultFragment
+    // Dans votre fonction showMovieDetails
+
     private fun showMovieDetails(movieList: List<Movie>) {
+        // Créer un nouveau fragment StackFragment
+        val stackFragment = StackFragment()
+
+        // Ajouter le StackFragment dans le fragment_container
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, stackFragment)
+            .commit()
+
+        // Ajouter chaque ResultFragment empilé dans le StackFragment
         for (movie in movieList) {
-            val resultFragment = parentFragmentManager.findFragmentById(R.id.fragment_container) as? ResultFragment
+            val newResultFragment = ResultFragment()
+            val bundle = createMovieBundle(movie)
+            newResultFragment.arguments = bundle
 
-            if (resultFragment != null) {
-                // Le fragment ResultFragment est déjà attaché, mettre à jour ses données
-                val bundle = createMovieBundle(movie)
-                resultFragment.arguments = bundle
-            } else {
-                // Le fragment ResultFragment n'est pas encore attaché, créer une nouvelle instance
-                val newResultFragment = ResultFragment()
-                val bundle = createMovieBundle(movie)
-                newResultFragment.arguments = bundle
+            parentFragmentManager.beginTransaction()
+                .add(R.id.stackContainer, newResultFragment)
+                .addToBackStack(null)  // Ajouter à la pile arrière
+                .commit()
 
-                // Ajouter le nouveau ResultFragment sans remplacer les fragments existants
-                parentFragmentManager.beginTransaction()
-                    .add(R.id.fragment_container, newResultFragment)
-                    .commit()
-            }
+            stackFragment.incrementFragmentCount()
         }
     }
+
+
 
     private fun createMovieBundle(movie: Movie): Bundle {
         val bundle = Bundle()
