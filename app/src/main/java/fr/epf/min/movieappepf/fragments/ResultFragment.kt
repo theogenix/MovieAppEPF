@@ -22,6 +22,8 @@ class ResultFragment : Fragment() {
     private lateinit var voteCountTextView: TextView
     private lateinit var voteAverageTextView: TextView
 
+    //creer la vue du fragment a partir du xml fragment_results
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -41,6 +43,7 @@ class ResultFragment : Fragment() {
         return view
     }
 
+    //configuration des données du fragment après que la vue a été créée
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -54,7 +57,7 @@ class ResultFragment : Fragment() {
         val voteCount = arguments?.getInt("vote_count")
         val voteAverage = arguments?.getDouble("vote_average")
 
-        // Affichez les données dans les TextView correspondants
+        // Affichage des données dans les TextView correspondants
         titleTextView.text = title
         overviewTextView.text = overview
         releaseDateTextView.text = releaseDate
@@ -63,7 +66,7 @@ class ResultFragment : Fragment() {
         voteCountTextView.text = voteCount.toString()
         voteAverageTextView.text = voteAverage.toString()
 
-        // Utilisez une bibliothèque comme Picasso ou Glide pour charger l'image à partir de l'URL du posterPath
+        // Charger l'image à partir de l'URL du posterPath
         if (!posterPath.isNullOrEmpty()) {
             val fullPosterPath = "https://image.tmdb.org/t/p/original$posterPath"
             Glide.with(requireContext())

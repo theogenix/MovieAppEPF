@@ -23,6 +23,7 @@ class ResearchFragment : Fragment() {
     private lateinit var searchView: SearchView
     private lateinit var movieApiService: MovieApiService
     private var movies: List<Movie> = emptyList()
+    private var onCreateViewCount = 0
 
     // Déclaration de l'interface de service pour communiquer avec l'API
     interface MovieApiService {
@@ -33,6 +34,7 @@ class ResearchFragment : Fragment() {
         ): Call<SearchResult>
     }
 
+    // mapper les données des recherches de films SearchResult à l'objet Movie
     private fun mapToMovie(searchResult: SearchResult): Movie? {
         val movieData = searchResult.results.firstOrNull()
         return movieData?.let {
@@ -55,13 +57,16 @@ class ResearchFragment : Fragment() {
         }
     }
 
+    //méthode pour créer la vue du fragment grace au xml fragment_research
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        onCreateViewCount++
         val view = inflater.inflate(R.layout.fragment_research, container, false)
         searchView = view.findViewById(R.id.searchView)
+        Log.d("SearchFragment", "onCreateView appelé $onCreateViewCount fois")
 
         // Configurer Retrofit
         val retrofit = Retrofit.Builder()
@@ -69,11 +74,13 @@ class ResearchFragment : Fragment() {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
-        // Créer une instance de MovieApiService
+        // Créer une instance de MovieApiService . permet de définir la méthode searchMovies() pour appeler l'API de recherche de film
         movieApiService = retrofit.create(MovieApiService::class.java)
 
-        // Configurer le SearchView
+        // Configurer le SearchView  représente le composant de la barre de recherhce
+        // setOnQueryTextLister pour écouter ce que l'user tape dans la barre de recherche
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            //onQueryTextSubmit pour qd l'user submit la requete
             override fun onQueryTextSubmit(query: String): Boolean {
                 // Appeler la méthode de recherche de films avec la clé d'API et la requête de recherche
                 val apiKey = "6b20b9e496710f84a435a42ec1086350"
@@ -92,6 +99,7 @@ class ResearchFragment : Fragment() {
                             if (movies.isNotEmpty()) {
                                 // Afficher le fragment ResultFragment avec les données du premier film
                                 showMovieDetails(movies.first())
+
                             }
                         } else {
                             // Gérer les erreurs de réponse de l'API ici
@@ -123,7 +131,7 @@ class ResearchFragment : Fragment() {
         val resultFragment = parentFragmentManager.findFragmentById(R.id.fragment_container) as? ResultFragment
 
         if (resultFragment != null) {
-            // Le fragment ResultFragment est déjà attaché, mettez à jour ses données
+            // Le fragment ResultFragment est déjà attaché, mettre à jour ses données
             val bundle = Bundle()
             bundle.putString("title", movie.title)
             bundle.putString("poster_path", movie.poster_path)
@@ -136,7 +144,7 @@ class ResearchFragment : Fragment() {
 
             resultFragment.arguments = bundle
         } else {
-            // Le fragment ResultFragment n'est pas encore attaché, créez une nouvelle instance
+            // Le fragment ResultFragment n'est pas encore attaché, créer une nouvelle instance
             val newResultFragment = ResultFragment()
 
             val bundle = Bundle()
@@ -151,7 +159,7 @@ class ResearchFragment : Fragment() {
 
             newResultFragment.arguments = bundle
 
-            // Remplacez le fragment actuel par le nouveau ResultFragment
+            // Remplacer le fragment actuel par le nouveau ResultFragment
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, newResultFragment)
                 .commit()
