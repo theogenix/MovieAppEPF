@@ -12,77 +12,70 @@ import fr.epf.min.movieappepf.R
 import fr.epf.min.movieappepf.adapter.MovieAdapter
 import fr.epf.min.movieappepf.adapter.MovieItemDecoration
 
-class HomeFragment(
-    private val context:MainActivity
-    ) : Fragment(){
-
+class HomeFragment(private val context: MainActivity) : Fragment() {
+    private val movieList = arrayListOf<MovieModel>()
+    private lateinit var horizontalRecyclerView: RecyclerView
+    private lateinit var verticalRecyclerView: RecyclerView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
-        val view=inflater?.inflate(R.layout.fragment_home,container,false)
-
-// creer une liste qui va stocker les films
-
-        val movieList= arrayListOf<MovieModel>()
-
-        //enregistrer un premier filml ds la liste
+        val view = inflater.inflate(R.layout.fragment_home, container, false)
 
         movieList.add(
             MovieModel(
-            "Star Wars",
-            "bcp de jedis",
+                "Star Wars",
+                "bcp de jedis",
                 "https://fr.web.img6.acsta.net/pictures/16/10/19/14/33/069648.jpg",
                 false
-        )
+            )
         )
         movieList.add(
             MovieModel(
-            "your name",
-            "anime",
+                "your name",
+                "anime",
                 "https://fr.web.img2.acsta.net/pictures/16/12/12/13/49/295774.jpg",
                 false
-        )
+            )
         )
         movieList.add(
             MovieModel(
-            "Harry Potter",
-            "magie",
+                "Harry Potter",
+                "magie",
                 "https://fr.web.img2.acsta.net/pictures/18/07/02/17/25/3643090.jpg",
                 true
-        )
+            )
         )
         movieList.add(
             MovieModel(
-            "avengers",
-            "héros",
+                "avengers",
+                "héros",
                 "https://fr.web.img3.acsta.net/medias/nmedia/18/85/31/58/20042068.jpg",
                 false
-        )
+            )
         )
         movieList.add(
             MovieModel(
-            "Ice Age",
-            "Anime",
+                "Ice Age",
+                "Anime",
                 "https://static.fnac-static.com/multimedia/Images/A8/A8/B1/47/4698536-1505-1505-1/tsp20180314141735/L-Age-De-Glace-4-AFFICHE-CINEMA-ORIGINALE.jpg",
                 false
+            )
         )
-        )
 
+        horizontalRecyclerView = view.findViewById(R.id.horizontal_recycler_view)
+        horizontalRecyclerView.adapter = MovieAdapter(context, movieList, R.layout.item_horizontal_movie)
 
-        // recuperer le recycler view
-        val horizontalRecyclerView= view!!.findViewById<RecyclerView>(R.id.horizontal_recycler_view)
-        horizontalRecyclerView.adapter=MovieAdapter(context,movieList,R.layout.item_horizontal_movie)
-
-        // recuperer le 2eme recycler view
-
-        val verticalRecyclerView=view.findViewById<RecyclerView>(R.id.vertical_recycler_view)
-        verticalRecyclerView.adapter=MovieAdapter(context,movieList,R.layout.item_vertical_movie)
+        verticalRecyclerView = view.findViewById(R.id.vertical_recycler_view)
+        verticalRecyclerView.adapter = MovieAdapter(context, movieList, R.layout.item_vertical_movie)
         verticalRecyclerView.addItemDecoration(MovieItemDecoration())
-
 
         return view
     }
 
-
-
+    //update les recyclersviews après avoir rajouté des films dans la liste movieList
+    fun updateMovieList(newMovieList: List<MovieModel>) {
+        movieList.addAll(newMovieList)
+        horizontalRecyclerView.adapter?.notifyDataSetChanged()
+        verticalRecyclerView.adapter?.notifyDataSetChanged()
+        println("updateMovieList")
+    }
 }

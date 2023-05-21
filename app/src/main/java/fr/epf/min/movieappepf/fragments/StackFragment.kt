@@ -9,8 +9,7 @@ import androidx.fragment.app.Fragment
 import fr.epf.min.movieappepf.R
 
 class StackFragment : Fragment() {
-    private var fragmentCount = 0
-
+    var fragmentCount = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,10 +24,7 @@ class StackFragment : Fragment() {
         super.onResume()
         Log.d("StackFragment", "Nombre de fragments ajoutés : $fragmentCount")
     }
-
     fun incrementFragmentCount() {
         fragmentCount++
     }
-
-
 }

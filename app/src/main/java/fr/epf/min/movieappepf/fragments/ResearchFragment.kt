@@ -63,10 +63,12 @@ class ResearchFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         onCreateViewCount++
         val view = inflater.inflate(R.layout.fragment_research, container, false)
         searchView = view.findViewById(R.id.searchView)
         Log.d("SearchFragment", "onCreateView appelé $onCreateViewCount fois")
+
 
         // Configurer Retrofit
         val retrofit = Retrofit.Builder()

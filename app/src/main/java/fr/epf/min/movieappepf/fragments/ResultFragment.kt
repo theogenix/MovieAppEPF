@@ -1,15 +1,22 @@
 package fr.epf.min.movieappepf.fragments
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.FitCenter
+import fr.epf.min.movieappepf.MainActivity
+import fr.epf.min.movieappepf.MovieModel
 import fr.epf.min.movieappepf.R
+import androidx.fragment.app.FragmentActivity
+
 
 class ResultFragment : Fragment() {
 
@@ -21,6 +28,7 @@ class ResultFragment : Fragment() {
     private lateinit var popularityTextView: TextView
     private lateinit var voteCountTextView: TextView
     private lateinit var voteAverageTextView: TextView
+
 
     //creation de la vue du fragment à partir du xml fragment_results
 
@@ -40,16 +48,16 @@ class ResultFragment : Fragment() {
         voteCountTextView = view.findViewById(R.id.voteCountTextView)
         voteAverageTextView = view.findViewById(R.id.voteAverageTextView)
 
+
         return view
     }
-
     //configuration des données du fragment après que la vue a été créée
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         // Récupération des données transmises depuis le Bundle
         val title = arguments?.getString("title")
-        val posterPath = arguments?.getString("poster_path")
+        var posterPath = arguments?.getString("poster_path")
         val overview = arguments?.getString("overview")
         val releaseDate = arguments?.getString("release_date")
         //val genres =arguments?.getIntArray("genre_ids")
@@ -75,6 +83,20 @@ class ResultFragment : Fragment() {
                 .override(500, 500)
                 .centerInside()
                 .into(posterImageView)
+        }
+        // Ajout d'un OnClickListener au bouton
+        val button = view.findViewById<Button>(R.id.StarButton)
+        button.setOnClickListener {
+            if (!title.isNullOrEmpty() && !overview.isNullOrEmpty() && !posterPath.isNullOrEmpty()) {
+                posterPath="https://image.tmdb.org/t/p/original$posterPath"
+                val movie = MovieModel(title!!, overview!!, posterPath!!, true)
+                MainActivity.movieList.add(movie)
+                println("Nom : $title")
+                println("Description : $overview")
+                println("URL de l'image : $posterPath")
+
+                Log.d("MainActivity", "movieList: ${MainActivity.movieList}")
+            }
         }
     }
 }

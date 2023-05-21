@@ -19,6 +19,14 @@
         android:layout_height="250dp"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop" />
+    <Button
+        android:id="@+id/StarButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fav here"
+        android:layout_gravity="end|top"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/ic_unstar" />
 
     <!-- Affichage de la description -->
     <TextView
