@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="360dp"
+    android:layout_height="500dp"
+    android:padding="@dimen/defaultMarginComponent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView2"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/popup_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/starwars">
+
+        </ImageView>
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/popup_movie_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nom du film"
+        android:layout_marginLeft="@dimen/defaultMarginComponent"
+        app:layout_constraintBottom_toBottomOf="@+id/cardView2"
+        app:layout_constraintStart_toEndOf="@+id/cardView2"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/popup_close_button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_close"
+        app:layout_constraintBottom_toBottomOf="@+id/cardView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/cardView2"
+        android:layout_marginRight="@dimen/defaultMarginComponent"/>
+
+    <TextView
+        android:id="@+id/popup_movie_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Description"
+        android:layout_marginTop="@dimen/defaultMarginComponent"
+        app:layout_constraintStart_toStartOf="@+id/cardView2"
+        app:layout_constraintTop_toBottomOf="@+id/cardView2" />
+
+    <TextView
+        android:id="@+id/popup_movie_subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="descri_blablabla"
+        android:layout_marginTop="@dimen/defaultMarginComponent"
+        app:layout_constraintStart_toStartOf="@+id/popup_movie_description"
+        app:layout_constraintTop_toBottomOf="@+id/popup_movie_description">
+
+    </TextView>
+
+    
+    
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

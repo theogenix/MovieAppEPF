@@ -12,11 +12,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import fr.epf.min.movieappepf.MainActivity
 import fr.epf.min.movieappepf.MovieModel
+import fr.epf.min.movieappepf.MoviePopup
 import fr.epf.min.movieappepf.R
 import fr.epf.min.movieappepf.fragments.ResultFragment
 
 class MovieAdapter (
-    private val context:MainActivity,
+    val context:MainActivity,
     private val movieList:List<MovieModel>,
     private val layoutId: Int
 
@@ -58,5 +59,13 @@ class MovieAdapter (
             }
 
         }
+        //interaction lors du click sur un film
+
+        holder.itemView.setOnClickListener {
+            //afficher la popup
+            MoviePopup(this,currentMovie).show()
+
+        }
+
     }
 }
