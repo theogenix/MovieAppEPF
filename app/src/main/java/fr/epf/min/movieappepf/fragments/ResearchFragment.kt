@@ -34,29 +34,6 @@ class ResearchFragment : Fragment() {
         ): Call<SearchResult>
     }
 
-    // mapper les données des recherches de films SearchResult à l'objet Movie
-    private fun mapToMovie(searchResult: SearchResult): Movie? {
-        val movieData = searchResult.results.firstOrNull()
-        return movieData?.let {
-            Movie(
-                poster_path = it.poster_path,
-                adult = it.adult,
-                overview = it.overview,
-                release_date = it.release_date,
-                //genre_ids = it.genre_ids,
-                id = it.id,
-                original_title = it.original_title,
-                original_language = it.original_language,
-                title = it.title,
-                backdrop_path = it.backdrop_path,
-                popularity = it.popularity,
-                vote_count = it.vote_count,
-                video = it.video,
-                vote_average = it.vote_average
-            )
-        }
-    }
-
     //méthode pour créer la vue du fragment grace au xml fragment_research
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -159,6 +136,7 @@ class ResearchFragment : Fragment() {
         bundle.putString("poster_path", movie.poster_path)
         bundle.putString("overview", movie.overview)
         bundle.putString("release_date", movie.release_date)
+        bundle.putString("original_language",movie.original_language)
         //bundle.putIntArray("genre_ids", movie.genre_ids.toIntArray())
         bundle.putDouble("popularity", movie.popularity)
         bundle.putInt("vote_count", movie.vote_count)

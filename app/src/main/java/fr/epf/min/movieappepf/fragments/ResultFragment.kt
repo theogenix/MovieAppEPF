@@ -1,5 +1,6 @@
 package fr.epf.min.movieappepf.fragments
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -24,6 +25,7 @@ class ResultFragment : Fragment() {
     private lateinit var posterImageView: ImageView
     private lateinit var overviewTextView: TextView
     private lateinit var releaseDateTextView: TextView
+    private lateinit var originalLanguageTextView: TextView
     //private lateinit var genresTextView: TextView
     private lateinit var popularityTextView: TextView
     private lateinit var voteCountTextView: TextView
@@ -32,6 +34,7 @@ class ResultFragment : Fragment() {
 
     //creation de la vue du fragment à partir du xml fragment_results
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -43,6 +46,7 @@ class ResultFragment : Fragment() {
         posterImageView = view.findViewById(R.id.posterImageView)
         overviewTextView = view.findViewById(R.id.overviewTextView)
         releaseDateTextView = view.findViewById(R.id.releaseDateTextView)
+        originalLanguageTextView=view.findViewById(R.id.originalLanguageTextView)
         //genresTextView = view.findViewById(R.id.genresTextView)
         popularityTextView = view.findViewById(R.id.popularityTextView)
         voteCountTextView = view.findViewById(R.id.voteCountTextView)
@@ -60,6 +64,7 @@ class ResultFragment : Fragment() {
         var posterPath = arguments?.getString("poster_path")
         val overview = arguments?.getString("overview")
         val releaseDate = arguments?.getString("release_date")
+        val originalLanguage=arguments?.getString("original_language")
         //val genres =arguments?.getIntArray("genre_ids")
         val popularity = arguments?.getDouble("popularity")
         val voteCount = arguments?.getInt("vote_count")
@@ -69,6 +74,7 @@ class ResultFragment : Fragment() {
         titleTextView.text = title
         overviewTextView.text = overview
         releaseDateTextView.text = releaseDate
+        originalLanguageTextView.text = originalLanguage
         //genresTextView.text = genres
         popularityTextView.text = popularity.toString()
         voteCountTextView.text = voteCount.toString()
@@ -87,13 +93,17 @@ class ResultFragment : Fragment() {
         // Ajout d'un OnClickListener au bouton
         val button = view.findViewById<Button>(R.id.StarButton)
         button.setOnClickListener {
+            //
             if (!title.isNullOrEmpty() && !overview.isNullOrEmpty() && !posterPath.isNullOrEmpty()) {
                 posterPath="https://image.tmdb.org/t/p/original$posterPath"
-                val movie = MovieModel(title!!, overview!!, posterPath!!, true)
+                val movie = MovieModel(title!!, overview!!, posterPath!!, true,releaseDate!!,originalLanguage!!,voteAverage!!)
                 MainActivity.movieList.add(movie)
                 println("Nom : $title")
                 println("Description : $overview")
                 println("URL de l'image : $posterPath")
+                println("Nom : $releaseDate")
+                println("Description : $originalLanguage")
+                println("URL de l'image : $voteAverage")
 
                 Log.d("MainActivity", "movieList: ${MainActivity.movieList}")
             }

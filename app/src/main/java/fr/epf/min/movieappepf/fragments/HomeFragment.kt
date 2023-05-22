@@ -25,7 +25,10 @@ class HomeFragment(private val context: MainActivity) : Fragment() {
                 "Star Wars",
                 "bcp de jedis",
                 "https://fr.web.img6.acsta.net/pictures/16/10/19/14/33/069648.jpg",
-                false
+                false,
+                "20 janvier",
+                "en",
+                5.25
             )
         )
         movieList.add(
@@ -33,7 +36,10 @@ class HomeFragment(private val context: MainActivity) : Fragment() {
                 "your name",
                 "anime",
                 "https://fr.web.img2.acsta.net/pictures/16/12/12/13/49/295774.jpg",
-                false
+                false,
+                "20 janvier",
+                "en",
+                5.25
             )
         )
         movieList.add(
@@ -41,7 +47,10 @@ class HomeFragment(private val context: MainActivity) : Fragment() {
                 "Harry Potter",
                 "magie",
                 "https://fr.web.img2.acsta.net/pictures/18/07/02/17/25/3643090.jpg",
-                true
+                true,
+                "20 janvier",
+                "en",
+                5.25
             )
         )
         movieList.add(
@@ -49,7 +58,10 @@ class HomeFragment(private val context: MainActivity) : Fragment() {
                 "avengers",
                 "héros",
                 "https://fr.web.img3.acsta.net/medias/nmedia/18/85/31/58/20042068.jpg",
-                false
+                false,
+                "20 janvier",
+                "en",
+                5.25
             )
         )
         movieList.add(
@@ -57,7 +69,10 @@ class HomeFragment(private val context: MainActivity) : Fragment() {
                 "Ice Age",
                 "Anime",
                 "https://static.fnac-static.com/multimedia/Images/A8/A8/B1/47/4698536-1505-1505-1/tsp20180314141735/L-Age-De-Glace-4-AFFICHE-CINEMA-ORIGINALE.jpg",
-                false
+                false,
+                "20 janvier",
+                "en",
+                5.25
             )
         )
 

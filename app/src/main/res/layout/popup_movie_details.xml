@@ -62,12 +62,61 @@
         android:text="descri_blablabla"
         android:layout_marginTop="@dimen/defaultMarginComponent"
         app:layout_constraintStart_toStartOf="@+id/popup_movie_description"
-        app:layout_constraintTop_toBottomOf="@+id/popup_movie_description">
+        app:layout_constraintTop_toBottomOf="@+id/popup_movie_description"/>
 
-    </TextView>
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/defaultMarginComponent"
+        android:text="date de sortie"
+        app:layout_constraintStart_toStartOf="@+id/popup_movie_description"
+        app:layout_constraintTop_toBottomOf="@+id/popup_movie_subtitle" />
 
-    
-    
+    <TextView
+        android:id="@+id/popup_movie_release_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="20janvier"
+        android:layout_marginTop="@dimen/defaultMarginComponent"
+        app:layout_constraintStart_toStartOf="@+id/textView2"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/defaultMarginComponent"
+        android:text="original language"
+        app:layout_constraintStart_toStartOf="@+id/popup_movie_release_date"
+        app:layout_constraintTop_toBottomOf="@+id/popup_movie_release_date" />
+
+    <TextView
+        android:id="@+id/popup_movie_orginal_language"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="en"
+        android:layout_marginTop="@dimen/defaultMarginComponent"
+        app:layout_constraintStart_toStartOf="@+id/textView3"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="80dp"
+        android:layout_height="21dp"
+        android:layout_marginTop="@dimen/defaultMarginComponent"
+        android:text="vote average"
+        app:layout_constraintStart_toStartOf="@+id/popup_movie_orginal_language"
+        app:layout_constraintTop_toBottomOf="@+id/popup_movie_orginal_language" />
+
+    <TextView
+        android:id="@+id/popup_movie_vote_average"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="5.25"
+        android:layout_marginTop="@dimen/defaultMarginComponent"
+        app:layout_constraintStart_toStartOf="@+id/textView4"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

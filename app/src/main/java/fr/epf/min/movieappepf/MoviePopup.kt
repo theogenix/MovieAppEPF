@@ -38,5 +38,11 @@ class MoviePopup (
         findViewById<TextView>(R.id.popup_movie_name).text=currentMovie.name
         //actualiser la description du film
         findViewById<TextView>(R.id.popup_movie_subtitle).text=currentMovie.description
+        //actualiser la date de sortie du film
+        findViewById<TextView>(R.id.popup_movie_release_date).text=currentMovie.releaseDate
+        //actualiser le language officiel du film
+        findViewById<TextView>(R.id.popup_movie_orginal_language).text=currentMovie.originalLanguage
+        //actualiser la moyenne de vote du film
+        findViewById<TextView>(R.id.popup_movie_vote_average).text= currentMovie.voteAverage.toString()
     }
 }
