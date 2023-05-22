@@ -30,6 +30,7 @@
         android:id="@+id/popup_movie_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textStyle="bold"
         android:text="Nom du film"
         android:layout_marginLeft="@dimen/defaultMarginComponent"
         app:layout_constraintBottom_toBottomOf="@+id/cardView2"
@@ -50,7 +51,8 @@
         android:id="@+id/popup_movie_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Description"
+        android:text="Description:"
+        android:textStyle="bold"
         android:layout_marginTop="@dimen/defaultMarginComponent"
         app:layout_constraintStart_toStartOf="@+id/cardView2"
         app:layout_constraintTop_toBottomOf="@+id/cardView2" />
@@ -69,7 +71,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/defaultMarginComponent"
-        android:text="date de sortie"
+        android:text="date de sortie:"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/popup_movie_description"
         app:layout_constraintTop_toBottomOf="@+id/popup_movie_subtitle" />
 
@@ -87,7 +90,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/defaultMarginComponent"
-        android:text="original language"
+        android:textStyle="bold"
+        android:text="langue officielle:"
         app:layout_constraintStart_toStartOf="@+id/popup_movie_release_date"
         app:layout_constraintTop_toBottomOf="@+id/popup_movie_release_date" />
 
@@ -102,10 +106,11 @@
 
     <TextView
         android:id="@+id/textView4"
-        android:layout_width="80dp"
-        android:layout_height="21dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/defaultMarginComponent"
-        android:text="vote average"
+        android:text="vote de la commu:"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/popup_movie_orginal_language"
         app:layout_constraintTop_toBottomOf="@+id/popup_movie_orginal_language" />
 
