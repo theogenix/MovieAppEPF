@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import fr.epf.min.movieappepf.fragments.ResearchFragment
 import android.util.Log
+import androidx.fragment.app.FragmentManager
 import fr.epf.min.movieappepf.fragments.HomeFragment
 import fr.epf.min.movieappepf.fragments.QrcodeFragment
 
@@ -19,11 +20,14 @@ class MainActivity : AppCompatActivity() {
     private lateinit var homeFragment: HomeFragment
 
     private fun loadFragment(fragment: Fragment) {
-        val transaction = supportFragmentManager.beginTransaction()
+        Log.d("MainActivity", "Loading fragment: ${fragment.javaClass.simpleName}")
+        val fragmentManager = supportFragmentManager
+        fragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        val transaction = fragmentManager.beginTransaction()
         transaction.replace(R.id.fragment_container, fragment)
-        transaction.addToBackStack(null)
         transaction.commit()
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -33,6 +37,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.home_page -> {
                     if (::homeFragment.isInitialized) {
                         homeFragment.updateMovieList(movieList)
+                        loadFragment(homeFragment)
                         println("il passe par update")
                     } else {
                         homeFragment = HomeFragment(this)

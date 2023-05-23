@@ -16,6 +16,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 class ResearchFragment : Fragment() {
@@ -31,6 +32,12 @@ class ResearchFragment : Fragment() {
         fun searchMovies(
             @Query("api_key") apiKey: String,
             @Query("query") query: String
+        ): Call<SearchResult>
+
+        @GET("movie/{id}/recommendations")
+        fun getRecommendations(
+            @Path("id") movieId: Int,
+            @Query("api_key") apiKey: String
         ): Call<SearchResult>
     }
 
@@ -78,7 +85,6 @@ class ResearchFragment : Fragment() {
                             if (movies.isNotEmpty()) {
                                 // Afficher le fragment ResultFragment avec les données du premier film
                                 showMovieDetails(movies)
-
                             }
                         } else {
                             // Gérer les erreurs de réponse de l'API ici
@@ -120,7 +126,6 @@ class ResearchFragment : Fragment() {
             val newResultFragment = ResultFragment()
             val bundle = createMovieBundle(movie)
             newResultFragment.arguments = bundle
-
             parentFragmentManager.beginTransaction()
                 .add(R.id.stackContainer, newResultFragment)
                 .addToBackStack(null)  // Ajouter à la pile arrière
@@ -137,6 +142,7 @@ class ResearchFragment : Fragment() {
         bundle.putString("overview", movie.overview)
         bundle.putString("release_date", movie.release_date)
         bundle.putString("original_language",movie.original_language)
+        bundle.putString("id", movie.id.toString())
         //bundle.putIntArray("genre_ids", movie.genre_ids.toIntArray())
         bundle.putDouble("popularity", movie.popularity)
         bundle.putInt("vote_count", movie.vote_count)
