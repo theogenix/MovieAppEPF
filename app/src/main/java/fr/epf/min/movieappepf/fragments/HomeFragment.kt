@@ -20,7 +20,8 @@ class HomeFragment(private val context: MainActivity) : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
-        movieList.add(
+        // Liste des films à ajouter au tt début
+        val newMovies = listOf(
             MovieModel(
                 "Star Wars",
                 "bcp de jedis",
@@ -29,9 +30,7 @@ class HomeFragment(private val context: MainActivity) : Fragment() {
                 "20 janvier",
                 "en",
                 5.25
-            )
-        )
-        movieList.add(
+            ),
             MovieModel(
                 "your name",
                 "anime",
@@ -40,9 +39,7 @@ class HomeFragment(private val context: MainActivity) : Fragment() {
                 "20 janvier",
                 "en",
                 5.25
-            )
-        )
-        movieList.add(
+            ),
             MovieModel(
                 "Harry Potter",
                 "magie",
@@ -51,9 +48,7 @@ class HomeFragment(private val context: MainActivity) : Fragment() {
                 "20 janvier",
                 "en",
                 5.25
-            )
-        )
-        movieList.add(
+            ),
             MovieModel(
                 "avengers",
                 "héros",
@@ -62,9 +57,7 @@ class HomeFragment(private val context: MainActivity) : Fragment() {
                 "20 janvier",
                 "en",
                 5.25
-            )
-        )
-        movieList.add(
+            ),
             MovieModel(
                 "Ice Age",
                 "Anime",
@@ -76,6 +69,14 @@ class HomeFragment(private val context: MainActivity) : Fragment() {
             )
         )
 
+        // Ajouter uniquement les films qui ne sont pas déjà présents dans la liste
+        newMovies.forEach { movie ->
+            val isMovieAlreadyAdded = movieList.any { it.name == movie.name }
+            if (!isMovieAlreadyAdded) {
+                movieList.add(movie)
+            }
+        }
+
         horizontalRecyclerView = view.findViewById(R.id.horizontal_recycler_view)
         horizontalRecyclerView.adapter = MovieAdapter(context, movieList, R.layout.item_horizontal_movie)
 
@@ -86,11 +87,20 @@ class HomeFragment(private val context: MainActivity) : Fragment() {
         return view
     }
 
+
     //update les recyclersviews après avoir rajouté des films dans la liste movieList
     fun updateMovieList(newMovieList: List<MovieModel>) {
-        movieList.addAll(newMovieList)
+        for (newMovie in newMovieList) {
+            val existingMovie = movieList.find { it.name == newMovie.name }
+            if (existingMovie == null) {
+                movieList.add(newMovie)
+            } else {
+            }
+        }
+
         horizontalRecyclerView.adapter?.notifyDataSetChanged()
         verticalRecyclerView.adapter?.notifyDataSetChanged()
         println("updateMovieList")
     }
+
 }

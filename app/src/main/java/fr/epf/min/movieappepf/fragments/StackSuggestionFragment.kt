@@ -15,7 +15,7 @@ class StackSuggestionFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Utilisation du fichier XML de mise en page "fragment_stack"
+        // Utilisation du fichier XML de mise en page "fragment_stack_suggestion"
         return inflater.inflate(R.layout.fragment_stack_suggestion, container, false)
     }
 
