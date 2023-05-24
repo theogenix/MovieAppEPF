@@ -39,6 +39,12 @@ class ResearchFragment : Fragment() {
             @Path("id") movieId: Int,
             @Query("api_key") apiKey: String
         ): Call<SearchResult>
+        @GET("movie/{id}")
+        fun getMovieDetails(
+            @Path("id") movieId: Int,
+            @Query("api_key") apiKey: String
+        ): Call<Movie>
+
     }
 
     //méthode pour créer la vue du fragment grace au xml fragment_research

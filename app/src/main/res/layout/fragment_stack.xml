@@ -14,7 +14,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Contenu de votre ScrollView -->
 
         </LinearLayout>
 

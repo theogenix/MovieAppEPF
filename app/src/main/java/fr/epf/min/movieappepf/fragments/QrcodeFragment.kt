@@ -1,9 +1,7 @@
 package fr.epf.min.movieappepf.fragments
 
 import android.Manifest
-import android.content.Context
 import android.content.pm.PackageManager
-import android.hardware.camera2.*
 import android.os.Bundle
 import android.os.Handler
 import android.os.HandlerThread
@@ -13,172 +11,193 @@ import android.view.SurfaceHolder
 import android.view.SurfaceView
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.google.zxing.integration.android.IntentIntegrator
+import fr.epf.min.movieappepf.Movie
 import fr.epf.min.movieappepf.R
-import java.util.concurrent.Semaphore
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
-class QrcodeFragment : Fragment(), SurfaceHolder.Callback {
-    private lateinit var fragmentContext: Context
-    private lateinit var surfaceHolder: SurfaceHolder
-    private val cameraManager: CameraManager by lazy {
-        fragmentContext.getSystemService(Context.CAMERA_SERVICE) as CameraManager
-    }
-    private lateinit var cameraDevice: CameraDevice
-    private lateinit var captureSession: CameraCaptureSession
-    private lateinit var backgroundThread: HandlerThread
-    private lateinit var backgroundHandler: Handler
-    private val cameraOpenCloseLock = Semaphore(1)
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.ResultPoint
+import com.journeyapps.barcodescanner.BarcodeCallback
+import com.journeyapps.barcodescanner.BarcodeResult
+import com.journeyapps.barcodescanner.CompoundBarcodeView
 
-    companion object {
-        private const val CAMERA_PERMISSION_REQUEST_CODE = 200
-        private const val TAG = "QRScanner"
-    }
+class QrcodeFragment: Fragment() {
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        fragmentContext = context
-    }
+    private lateinit var scannerView: CompoundBarcodeView
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val view = inflater.inflate(R.layout.fragment_qrcode, container, false)
-        val surfaceView = view.findViewById(R.id.cameraPreview) as SurfaceView
-        surfaceHolder = surfaceView.holder
-        surfaceHolder.addCallback(this)
+        scannerView = view.findViewById(R.id.cameraPreview)
         return view
     }
 
-
-
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        surfaceHolder.removeCallback(this)
-    }
-
-    override fun surfaceCreated(holder: SurfaceHolder) {
-        startBackgroundThread()
-        requestCameraPermission()
-    }
-
-    override fun surfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) {
-        // Handle surface changes if needed
-    }
-
-    override fun surfaceDestroyed(holder: SurfaceHolder) {
-        closeCamera()
-        stopBackgroundThread()
-    }
-
-    private fun startBackgroundThread() {
-        backgroundThread = HandlerThread("CameraBackground").also { it.start() }
-        backgroundHandler = Handler(backgroundThread.looper)
-    }
-
-    private fun stopBackgroundThread() {
-        backgroundThread.quitSafely()
-        try {
-            backgroundThread.join()
-        } catch (e: InterruptedException) {
-            Log.e(TAG, "Interrupted while stopping background thread", e)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val scanButton = view.findViewById<Button>(R.id.scanButton)
+        scanButton.setOnClickListener {
+            if (hasCameraPermission()) {
+                startCamera()
+            } else {
+                requestCameraPermission()
+            }
         }
+
+        // Configuration du callback du scanner de code-barres
+        scannerView.decodeSingle(object : BarcodeCallback {
+            override fun barcodeResult(result: BarcodeResult?) {
+                this@QrcodeFragment.barcodeResult(result)
+            }
+
+            override fun possibleResultPoints(resultPoints: List<ResultPoint>?) {
+            }
+        })
+    }
+
+
+    private fun hasCameraPermission(): Boolean {
+        return ContextCompat.checkSelfPermission(
+            requireContext(),
+            Manifest.permission.CAMERA
+        ) == PackageManager.PERMISSION_GRANTED
     }
 
     private fun requestCameraPermission() {
-        if (ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.CAMERA
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                requireActivity(),
-                arrayOf(Manifest.permission.CAMERA),
-                CAMERA_PERMISSION_REQUEST_CODE
-            )
-        } else {
-            openCamera()
-        }
+        ActivityCompat.requestPermissions(
+            requireActivity(),
+            arrayOf(Manifest.permission.CAMERA),
+            CAMERA_PERMISSION_REQUEST_CODE
+        )
     }
 
-    private val stateCallback = object : CameraDevice.StateCallback() {
-        override fun onOpened(camera: CameraDevice) {
-            cameraOpenCloseLock.release()
-            cameraDevice = camera
-            createCameraPreviewSession()
-        }
-
-        override fun onDisconnected(camera: CameraDevice) {
-            cameraOpenCloseLock.release()
-            camera.close()
-        }
-
-        override fun onError(camera: CameraDevice, error: Int) {
-            onDisconnected(camera)
-            Toast.makeText(context, "Camera error: $error", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun openCamera() {
-        try {
-            val cameraId = cameraManager.cameraIdList[0]
-            if (ActivityCompat.checkSelfPermission(
-                    requireContext(),
-                    Manifest.permission.CAMERA
-                ) == PackageManager.PERMISSION_GRANTED
-            ) {
-                cameraManager.openCamera(cameraId, stateCallback, backgroundHandler)
+    private fun startCamera() {
+        scannerView.decodeContinuous(object : BarcodeCallback {
+            override fun barcodeResult(result: BarcodeResult?) {
+                result?.let {
+                    Toast.makeText(requireContext(), "QR Code: ${result.text}", Toast.LENGTH_SHORT).show()
+                }
             }
-        } catch (e: CameraAccessException) {
-            Log.e(TAG, "Cannot open camera", e)
-            Toast.makeText(context, "Cannot open camera.", Toast.LENGTH_SHORT).show()
+
+            override fun possibleResultPoints(resultPoints: List<com.google.zxing.ResultPoint>?) {
+            }
+        })
+        scannerView.setStatusText("")
+        scannerView.resume()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (hasCameraPermission()) {
+            startCamera()
+        } else {
+            requestCameraPermission()
         }
     }
 
-    private fun createCameraPreviewSession() {
-        try {
-            val surface = surfaceHolder.surface
-            val captureRequestBuilder =
-                cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW)
-            captureRequestBuilder.addTarget(surface)
+    override fun onPause() {
+        super.onPause()
+        scannerView.pause()
+    }
 
-            cameraDevice.createCaptureSession(
-                listOf(surface),
-                object : CameraCaptureSession.StateCallback() {
-                    override fun onConfigured(session: CameraCaptureSession) {
-                        captureSession = session
-                        captureRequestBuilder.set(
-                            CaptureRequest.CONTROL_AF_MODE,
-                            CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE
-                        )
-                        session.setRepeatingRequest(
-                            captureRequestBuilder.build(),
-                            null,
-                            backgroundHandler
-                        )
+    companion object {
+        private const val CAMERA_PERMISSION_REQUEST_CODE = 123
+    }
+   fun barcodeResult(result: BarcodeResult?) {
+        result?.let {
+            val movieId = result.text.toIntOrNull()
+            if (movieId != null) {
+                fetchMovieDetails(movieId)
+            } else {
+                Toast.makeText(requireContext(), "Invalid QR Code", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+    private fun fetchMovieDetails(movieId: Int) {
+        val apiKey = "6b20b9e496710f84a435a42ec1086350"
+
+        // Configurer Retrofit
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://api.themoviedb.org/3/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        // Créer une instance de MovieApiService en utilisant retrofit.create()
+        val movieDetails = retrofit.create(ResearchFragment.MovieApiService::class.java)
+
+        // Appeler la méthode pour récupérer les détails du film par ID avec la clé d'API et l'ID du film
+        val call = movieDetails.getMovieDetails(movieId, apiKey)
+
+        // Exécuter la requête pour récupérer les détails du film par ID
+        call.enqueue(object : Callback<Movie> {
+            override fun onResponse(call: Call<Movie>, response: Response<Movie>) {
+                if (response.isSuccessful) {
+                    val movie = response.body()
+                    // Traiter les détails du film
+                    if (movie != null) {
+                        // Les détails du film sont disponibles dans l'objet `movie`
+                        Log.d("SearchFragment", "Requête de recherche réussie")
+                        Log.d("SearchFragment", "Résultats: $movie")
+                        // Appeler la méthode pour afficher les détails du film
+                        showQrcodeMovieDetails(movie)
                     }
+                } else {
+                    // Gérer les erreurs de réponse de l'API
+                    Log.e("QrcodeFragment", "Erreur de réponse de l'API: ${response.code()}")
+                }
+            }
 
-                    override fun onConfigureFailed(session: CameraCaptureSession) {
-                        Log.e(TAG, "Failed to configure camera preview.")
-                    }
-                },
-                backgroundHandler
-            )
-        } catch (e: CameraAccessException) {
-            Log.e(TAG, "Cannot create camera capture session", e)
-        }
+            override fun onFailure(call: Call<Movie>, t: Throwable) {
+                // Gérer les erreurs de connexion ou d'exécution de la requête
+                Log.e("QrcodeFragment", "Erreur lors de l'exécution de la requête de recherche: ${t.message}")
+            }
+        })
     }
 
-    private fun closeCamera() {
-        try {
-            cameraOpenCloseLock.acquire()
-            captureSession.close()
-            cameraDevice.close()
-        } catch (e: InterruptedException) {
-            throw RuntimeException("Interrupted while trying to lock camera closing.", e)
-        } finally {
-            cameraOpenCloseLock.release()
-        }
+    private fun showQrcodeMovieDetails(movie: Movie) {
+        // Créer un nouveau fragment StackQrcodeFragment
+        val stackQrcodeFragment = StackQrcodeFragment()
+
+        // Ajouter le StackQrcodeFragment dans le fragment_container
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, stackQrcodeFragment)
+            .commit()
+
+        // Ajouter le ResultFragment avec les détails du film dans le StackQrcodeFragment
+        val newResultFragment = ResultFragment()
+        val bundle = createMovieBundle(movie)
+        newResultFragment.arguments = bundle
+
+        parentFragmentManager.beginTransaction()
+            .add(R.id.stackQrcodeContainer, newResultFragment)
+            .commit()
     }
-}
+
+    private fun createMovieBundle(movie: Movie): Bundle {
+        val bundle = Bundle()
+        bundle.putString("title", movie.title)
+        bundle.putString("poster_path", movie.poster_path)
+        bundle.putString("overview", movie.overview)
+        bundle.putString("release_date", movie.release_date)
+        bundle.putString("original_language", movie.original_language)
+        bundle.putString("id", movie.id.toString())
+        bundle.putDouble("popularity", movie.popularity)
+        bundle.putInt("vote_count", movie.vote_count)
+        bundle.putDouble("vote_average", movie.vote_average)
+        return bundle
+    }
+ }
+
+
