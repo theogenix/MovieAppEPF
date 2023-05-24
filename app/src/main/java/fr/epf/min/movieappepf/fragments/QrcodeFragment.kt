@@ -56,21 +56,6 @@ class QrcodeFragment: Fragment() {
                 requestCameraPermission()
             }
         }
-
-        // Configuration du callback du scanner de code-barres
-        scannerView.decodeSingle(object : BarcodeCallback {
-            override fun barcodeResult(result: BarcodeResult?) {
-                if (isAdded) {
-                    Log.d("QrcodeFragment", "Le résultat du code-barres est: $result")
-                    Log.d("QrcodeFragment", "Il passe par le barcode $result")
-                    result?.let {
-                        handleBarcodeResult(result)
-                    }
-                }
-            }
-            override fun possibleResultPoints(resultPoints: List<ResultPoint>?) {
-            }
-        })
     }
     private fun hasCameraPermission(): Boolean {
         return ContextCompat.checkSelfPermission(
@@ -91,7 +76,15 @@ class QrcodeFragment: Fragment() {
         scannerView.decodeContinuous(object : BarcodeCallback {
             override fun barcodeResult(result: BarcodeResult?) {
                 result?.let {
-                    Toast.makeText(requireContext(), "QR Code: ${result.text}", Toast.LENGTH_SHORT).show()
+                    if (isAdded && !isRequestingMovieDetails) {
+                        isRequestingMovieDetails = true
+                        val movieId = result.text.toIntOrNull()
+                        if (movieId != null) {
+                            fetchMovieDetails(movieId)
+                        } else {
+                            Toast.makeText(requireContext(), "Invalid QR Code", Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 }
             }
 
@@ -101,6 +94,7 @@ class QrcodeFragment: Fragment() {
         scannerView.setStatusText("")
         scannerView.resume()
     }
+
 
     override fun onResume() {
         super.onResume()
@@ -120,27 +114,6 @@ class QrcodeFragment: Fragment() {
         private const val CAMERA_PERMISSION_REQUEST_CODE = 123
     }
     private var isRequestingMovieDetails = false
-
-
-
-    fun handleBarcodeResult(result: BarcodeResult?) {
-        Log.d("QrcodeFragment", "handleBarcodeResult() called")
-
-        Log.d("QrcodeFragment", "Le résultat du barre code est: $result")
-        println("passe par la méthode barcode")
-        result?.let {
-            if (isAdded && !isRequestingMovieDetails) {
-                isRequestingMovieDetails = true
-                val movieId = result.text.toIntOrNull()
-                if (movieId != null) {
-                    fetchMovieDetails(movieId)
-                } else {
-                    Toast.makeText(requireContext(), "Invalid QR Code", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-    }
-
 
     private fun fetchMovieDetails(movieId: Int) {
         val apiKey = "6b20b9e496710f84a435a42ec1086350"
