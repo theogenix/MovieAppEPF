@@ -8,4 +8,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="green">#FF00FF00</color>
+    <color name="bleuciel">#B4E4FF</color>
+    <color name="vertpomme">#DFFFD8</color>
+    <color name="rosepale">#F7C8E0</color>
+    <color name="bleufonce">#95BDFF</color>
 </resources>

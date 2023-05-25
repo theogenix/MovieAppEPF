@@ -2,8 +2,9 @@
     <!-- Base application theme. -->
     <style name="Theme.MovieAppEpf" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorPrimary">@color/bleufonce</item>
+        <!-- barre des notifs. -->
+        <item name="colorPrimaryVariant">@color/bleufonce</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
@@ -36,6 +37,11 @@
     <style name="BottomNavigationTheme" parent="Widget.Design.BottomNavigationView">
         <item name="android:textSize">18sp</item>
     </style>
+
+    <style name="CustomButtonStyle" parent="Widget.AppCompat.Button">
+        <item name="android:background">@color/rosepale</item>
+    </style>
+
 
 
 </resources>
