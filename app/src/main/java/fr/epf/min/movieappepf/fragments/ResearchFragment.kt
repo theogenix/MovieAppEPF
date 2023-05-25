@@ -44,6 +44,11 @@ class ResearchFragment : Fragment() {
             @Path("id") movieId: Int,
             @Query("api_key") apiKey: String
         ): Call<Movie>
+        @GET("discover/movie")
+        fun getMoviesByGenre(
+            @Query("api_key") apiKey: String,
+            @Query("with_genres") genreId: Int
+        ): Call<SearchResult>
 
     }
 
