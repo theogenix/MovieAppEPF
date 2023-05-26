@@ -63,6 +63,7 @@
         android:layout_height="wrap_content"
         android:text="descri_blablabla"
         android:layout_marginTop="@dimen/defaultMarginComponent"
+        android:layout_marginRight="150dp"
         app:layout_constraintStart_toStartOf="@+id/popup_movie_description"
         app:layout_constraintTop_toBottomOf="@+id/popup_movie_description"/>
 

@@ -59,7 +59,7 @@ class HomeFragment(private val context: MainActivity) : Fragment() {
                 "Harry Potter",
                 "magie",
                 "https://fr.web.img2.acsta.net/pictures/18/07/02/17/25/3643090.jpg",
-                true,
+                false,
                 "20 janvier",
                 "en",
                 5.25
@@ -120,8 +120,6 @@ class HomeFragment(private val context: MainActivity) : Fragment() {
                 fetchMoviesByGenre(selectedGenreId)
             }
         }
-
-        // Autres initialisations et configurations si nécessaires
     }
 
     private fun setupSpinner() {

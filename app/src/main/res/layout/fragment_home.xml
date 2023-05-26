@@ -55,6 +55,7 @@
         android:layout_marginLeft="@dimen/defaultMargin"
         android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:layout_marginBottom="55dp"
         />
 
 
