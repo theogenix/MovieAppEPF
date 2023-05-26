@@ -110,7 +110,7 @@ class ResultFragment : Fragment() {
         val iconStateList = StateListDrawable()
         iconStateList.addState(intArrayOf(android.R.attr.state_pressed), clickedIcon)
         iconStateList.addState(intArrayOf(), defaultIcon)
-        
+
         button.setCompoundDrawablesWithIntrinsicBounds(iconStateList, null, null, null)
 
         button.setOnClickListener {

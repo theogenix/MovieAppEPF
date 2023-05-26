@@ -1,5 +1,7 @@
 package fr.epf.min.movieappepf.fragments
 
+import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,6 +11,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import fr.epf.min.movieappepf.*
@@ -39,48 +42,48 @@ class HomeFragment(private val context: MainActivity) : Fragment() {
         val newMovies = listOf(
             MovieModel(
                 "Star Wars",
-                "bcp de jedis",
+                "A rogue band of resistance fighters unite for a mission to steal the Death Star plans and bring a new hope to the galaxy.",
                 "https://fr.web.img6.acsta.net/pictures/16/10/19/14/33/069648.jpg",
                 false,
-                "20 janvier",
+                "2016-12-14",
                 "en",
                 5.25
             ),
             MovieModel(
                 "Your name",
-                "anime",
+                "High schoolers Mitsuha and Taki are complete strangers living separate lives. But one night, they suddenly switch places. Mitsuha wakes up in Taki’s body, and he in hers. This bizarre occurrence continues to happen randomly, and the two must adjust their lives around each other.",
                 "https://fr.web.img2.acsta.net/pictures/16/12/12/13/49/295774.jpg",
                 false,
-                "20 janvier",
+                "2016-08-26",
                 "en",
-                5.25
+                8.523
             ),
             MovieModel(
                 "Harry Potter",
-                "magie",
+                "Harry Potter has lived under the stairs at his aunt and uncle's house his whole life. But on his 11th birthday, he learns he's a powerful wizard—with a place waiting for him at the Hogwarts School of Witchcraft and Wizardry. As he learns to harness his newfound powers with the help of the school's kindly headmaster, Harry uncovers the truth about his parents' deaths—and about the villain who's to blame.",
                 "https://fr.web.img2.acsta.net/pictures/18/07/02/17/25/3643090.jpg",
                 false,
-                "20 janvier",
+                "2001-11-16",
                 "en",
-                5.25
+                7.915
             ),
             MovieModel(
                 "Avengers",
-                "héros",
+                "When an unexpected enemy emerges and threatens global safety and security, Nick Fury, director of the international peacekeeping agency known as S.H.I.E.L.D., finds himself in need of a team to pull the world back from the brink of disaster. Spanning the globe, a daring recruitment effort begins!",
                 "https://fr.web.img3.acsta.net/medias/nmedia/18/85/31/58/20042068.jpg",
                 false,
-                "20 janvier",
+                "2012-04-25",
                 "en",
-                5.25
+                7.707
             ),
             MovieModel(
                 "Ice Age",
-                "Anime",
+                "Manny, Diego, and Sid embark upon another adventure after their continent is set adrift. Using an iceberg as a ship, they encounter sea creatures and battle pirates as they explore a new world.",
                 "https://static.fnac-static.com/multimedia/Images/A8/A8/B1/47/4698536-1505-1505-1/tsp20180314141735/L-Age-De-Glace-4-AFFICHE-CINEMA-ORIGINALE.jpg",
                 false,
-                "20 janvier",
+                "2012-06-27",
                 "en",
-                5.25
+                6.352
             )
         )
         fetchTrendingMovies("en")
@@ -114,6 +117,11 @@ class HomeFragment(private val context: MainActivity) : Fragment() {
         setupSpinner()
 
         val searchButton = view.findViewById<Button>(R.id.genreButton)
+        val searchIcon: Drawable? = ContextCompat.getDrawable(requireContext(), R.drawable.ic_search)
+        searchButton.setCompoundDrawablesWithIntrinsicBounds(searchIcon, null, null, null)
+        searchButton.setBackgroundColor(Color.TRANSPARENT)
+
+
         searchButton.setOnClickListener {
             // Vérifier si un genre est sélectionné
             if (selectedGenreId != 0) {
