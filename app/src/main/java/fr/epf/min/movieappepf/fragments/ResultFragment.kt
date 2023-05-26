@@ -2,6 +2,8 @@ package fr.epf.min.movieappepf.fragments
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.StateListDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.FitCenter
@@ -35,6 +38,8 @@ class ResultFragment : Fragment() {
     private lateinit var popularityTextView: TextView
     private lateinit var voteCountTextView: TextView
     private lateinit var voteAverageTextView: TextView
+
+    private var isButtonClicked = false
     //creation de la vue du fragment à partir du xml fragment_results
     @SuppressLint("MissingInflatedId")
     override fun onCreateView(
@@ -98,8 +103,24 @@ class ResultFragment : Fragment() {
         }
         // Ajout d'un OnClickListener au bouton fav here
         val button = view.findViewById<Button>(R.id.StarButton)
+
+        val defaultIcon: Drawable? = ContextCompat.getDrawable(requireContext(), R.drawable.ic_unstar)
+        val clickedIcon: Drawable? = ContextCompat.getDrawable(requireContext(), R.drawable.ic_star)
+
+        val iconStateList = StateListDrawable()
+        iconStateList.addState(intArrayOf(android.R.attr.state_pressed), clickedIcon)
+        iconStateList.addState(intArrayOf(), defaultIcon)
+        
+        button.setCompoundDrawablesWithIntrinsicBounds(iconStateList, null, null, null)
+
         button.setOnClickListener {
-            //
+            isButtonClicked = !isButtonClicked
+            if (isButtonClicked) {
+                button.setCompoundDrawablesWithIntrinsicBounds(clickedIcon, null, null, null)
+            } else {
+                button.setCompoundDrawablesWithIntrinsicBounds(defaultIcon, null, null, null)
+            }
+
             if (!title.isNullOrEmpty() && !overview.isNullOrEmpty() && !posterPath.isNullOrEmpty()) {
                 posterPath = "https://image.tmdb.org/t/p/original$posterPath"
                 val movie = MovieModel(
@@ -120,10 +141,14 @@ class ResultFragment : Fragment() {
                 println("vote average : $voteAverage")
 
                 Log.d("MainActivity", "movieList: ${MainActivity.movieList}")
+
+                button.isEnabled = false
             }
         }
         // Ajout d'un OnClickListener au bouton suggest here
         val suggestButton = view.findViewById<Button>(R.id.suggestionButton)
+        val suggestIcon: Drawable? = ContextCompat.getDrawable(requireContext(), R.drawable.ic_recommendation)
+        suggestButton.setCompoundDrawablesWithIntrinsicBounds(suggestIcon, null, null, null)
         suggestButton.setOnClickListener {
             val movieId = idTextView.text.toString().toInt()
             fetchMovieRecommendations(movieId)

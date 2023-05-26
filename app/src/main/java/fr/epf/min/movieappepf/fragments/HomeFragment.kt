@@ -47,7 +47,7 @@ class HomeFragment(private val context: MainActivity) : Fragment() {
                 5.25
             ),
             MovieModel(
-                "your name",
+                "Your name",
                 "anime",
                 "https://fr.web.img2.acsta.net/pictures/16/12/12/13/49/295774.jpg",
                 false,
@@ -65,7 +65,7 @@ class HomeFragment(private val context: MainActivity) : Fragment() {
                 5.25
             ),
             MovieModel(
-                "avengers",
+                "Avengers",
                 "héros",
                 "https://fr.web.img3.acsta.net/medias/nmedia/18/85/31/58/20042068.jpg",
                 false,
