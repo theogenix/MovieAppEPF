@@ -38,4 +38,7 @@ Build and run the application on an Android emulator or physical device.
 
 
 ## Additional Features
+Category-based Movie Search: Users can now search for movies based on specific categories such as Romance, Animation, Action, and more. This feature allows users to filter the movie results and find movies that belong to their preferred genre or category.
+
+Weekly Movie Recommendations: The application now provides a curated list of recommended movies every week. These recommendations are based on various factors such as user ratings, popularity, and genre preferences. Users can discover new movies and stay updated with the latest releases.
 
