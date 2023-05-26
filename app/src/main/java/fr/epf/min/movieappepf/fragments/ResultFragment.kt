@@ -133,16 +133,8 @@ class ResultFragment : Fragment() {
                     voteAverage!!
                 )
                 MainActivity.movieList.add(movie)
-                println("Nom : $title")
-                println("Description : $overview")
-                println("URL de l'image : $posterPath")
-                println("release date : $releaseDate")
-                println("original Language : $originalLanguage")
-                println("vote average : $voteAverage")
-
-                Log.d("MainActivity", "movieList: ${MainActivity.movieList}")
-
                 button.isEnabled = false
+                println("result mooviesList: $MainActivity.movieList")
             }
         }
         // Ajout d'un OnClickListener au bouton suggest here

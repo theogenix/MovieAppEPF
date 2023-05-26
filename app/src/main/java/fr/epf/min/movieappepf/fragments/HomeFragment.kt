@@ -14,6 +14,8 @@ import android.widget.Spinner
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import fr.epf.min.movieappepf.*
 import fr.epf.min.movieappepf.adapter.MovieAdapter
 import fr.epf.min.movieappepf.adapter.MovieItemDecoration
@@ -22,21 +24,51 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.*
 
 class HomeFragment(private val context: MainActivity) : Fragment() {
-    private val movieList = arrayListOf<MovieModel>()
+    private val movieList: MutableList<MovieModel> = mutableListOf()
     private val trendingMoviesList: MutableList<MovieModel> = mutableListOf()
-
 
     private lateinit var horizontalRecyclerView: RecyclerView
     private lateinit var verticalRecyclerView: RecyclerView
     private var selectedGenreId: Int = 0
 
-
-
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
+
+        // Chargement des données depuis le fichier texte
+        val fileName = "donneesFilm.txt"
+        val file = File(context.filesDir, fileName)
+        if (!file.exists()) {
+            file.createNewFile()
+        }
+
+        val reader = BufferedReader(InputStreamReader(file.inputStream(), Charsets.UTF_8))
+        val listeSauvegardee = mutableListOf<String>()
+        var line: String?
+
+        while (reader.readLine().also { line = it } != null) {
+            listeSauvegardee.add(line.toString())
+        }
+        reader.close()
+
+        // Convertir les données sauvegardées en objets MovieModel
+        val gson = Gson()
+        val savedMovies: List<MovieModel> = listeSauvegardee.map { movieString ->
+            gson.fromJson(movieString, object : TypeToken<MovieModel>() {}.type)
+        }
+
+        val saveButton: Button = view.findViewById(R.id.syncroButton)
+        val saveIcon: Drawable? = ContextCompat.getDrawable(requireContext(), R.drawable.ic_syncro)
+        saveButton.setCompoundDrawablesWithIntrinsicBounds(saveIcon, null, null, null)
+        saveButton.setBackgroundColor(Color.TRANSPARENT)
+        saveButton.setOnClickListener {
+            saveDataToFile()
+        }
+
+        println("savedMovies: $savedMovies")
+
 
         // Liste des films à ajouter au tt début
         val newMovies = listOf(
@@ -87,8 +119,15 @@ class HomeFragment(private val context: MainActivity) : Fragment() {
             )
         )
         fetchTrendingMovies("en")
+        //eviter de rajouter dans movieList les movies deja existant de savedMovies
+        val moviesToAdd = savedMovies.filter { savedMovie ->
+            !movieList.any { movie -> movie.name == savedMovie.name }
+        }
+        movieList.addAll(moviesToAdd)
+        println("moviesTOadd: $moviesToAdd")
 
         // Ajouter uniquement les films qui ne sont pas déjà présents dans la liste
+
         newMovies.forEach { movie ->
             val isMovieAlreadyAdded = movieList.any { it.name == movie.name }
             if (!isMovieAlreadyAdded) {
@@ -104,8 +143,45 @@ class HomeFragment(private val context: MainActivity) : Fragment() {
         verticalRecyclerView.adapter = MovieAdapter(context, trendingMoviesList, R.layout.item_vertical_movie)
         verticalRecyclerView.addItemDecoration(MovieItemDecoration())
 
+        println("ma moviesList: $movieList")
+
         return view
     }
+    override fun onPause() {
+        super.onPause()
+        saveDataToFile()
+    }
+
+    private fun saveDataToFile() {
+        // Sauvegarde des données dans un fichier texte
+        val file = File(requireContext().filesDir, "donneesFilm.txt")
+        val writer = BufferedWriter(FileWriter(file))
+        val gson = Gson()
+        // Utilisation d'un HashSet pour vérifier l'unicité des films
+        val savedMovies = HashSet<MovieModel>()
+
+        // Fusion des films de movieList et de l'objet compagnon
+        val allMovies = movieList + MainActivity.movieList
+
+        for (element in allMovies) {
+            if (!savedMovies.contains(element)) {
+                // Vérifier si le film n'est pas déjà présent dans le fichier
+                val isMovieAlreadySaved = savedMovies.any { savedMovie ->
+                    savedMovie.name == element.name
+                }
+
+                if (!isMovieAlreadySaved) {
+                    savedMovies.add(element)
+                    val movieString = gson.toJson(element)
+                    writer.write(movieString)
+                    writer.newLine()
+                }
+            }
+        }
+        writer.close()
+    }
+
+
     private fun updateTrendingMoviesList(newMoviesList: List<MovieModel>) {
         trendingMoviesList.clear()
         trendingMoviesList.addAll(newMoviesList)
@@ -224,10 +300,7 @@ class HomeFragment(private val context: MainActivity) : Fragment() {
                     val trendingMovies = searchResult?.results ?: emptyList()
                     val trendingMovieModels = trendingMovies.map { mapMovieToMovieModel(it) }
                     updateTrendingMoviesList(trendingMovieModels)
-                    Log.d("SearchFragment", "Requête de recherche réussie")
-                    Log.d("SearchFragment", "Résultats: $trendingMovies")
-                    println("trendingMoviesList: $trendingMoviesList")
-                    println("MoviesList: $movieList")
+
 
 
                 } else {

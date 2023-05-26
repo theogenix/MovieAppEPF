@@ -28,6 +28,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             />
+        <Button
+            android:layout_marginTop="5dp"
+            android:id="@+id/syncroButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sync:"
+            android:textAllCaps="false"
+            style="@style/CustomButtonStyle"
+            android:layout_marginBottom="5dp"
+            android:textColor="@color/black"
+            />
     </LinearLayout>
     <TextView
         android:layout_width="wrap_content"
