@@ -22,6 +22,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class HomeFragment(private val context: MainActivity) : Fragment() {
     private val movieList = arrayListOf<MovieModel>()
+    private val trendingMoviesList: MutableList<MovieModel> = mutableListOf()
+
+
     private lateinit var horizontalRecyclerView: RecyclerView
     private lateinit var verticalRecyclerView: RecyclerView
     private var selectedGenreId: Int = 0
@@ -80,6 +83,7 @@ class HomeFragment(private val context: MainActivity) : Fragment() {
                 5.25
             )
         )
+        fetchTrendingMovies("en")
 
         // Ajouter uniquement les films qui ne sont pas déjà présents dans la liste
         newMovies.forEach { movie ->
@@ -92,11 +96,17 @@ class HomeFragment(private val context: MainActivity) : Fragment() {
         horizontalRecyclerView = view.findViewById(R.id.horizontal_recycler_view)
         horizontalRecyclerView.adapter = MovieAdapter(context, movieList, R.layout.item_horizontal_movie)
 
+
         verticalRecyclerView = view.findViewById(R.id.vertical_recycler_view)
-        verticalRecyclerView.adapter = MovieAdapter(context, movieList, R.layout.item_vertical_movie)
+        verticalRecyclerView.adapter = MovieAdapter(context, trendingMoviesList, R.layout.item_vertical_movie)
         verticalRecyclerView.addItemDecoration(MovieItemDecoration())
 
         return view
+    }
+    private fun updateTrendingMoviesList(newMoviesList: List<MovieModel>) {
+        trendingMoviesList.clear()
+        trendingMoviesList.addAll(newMoviesList)
+        verticalRecyclerView.adapter?.notifyDataSetChanged()
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -122,7 +132,6 @@ class HomeFragment(private val context: MainActivity) : Fragment() {
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                val selectedItem = parent.getItemAtPosition(position).toString()
                 selectedGenreId = genreList[position].second
 
             }
@@ -167,6 +176,54 @@ class HomeFragment(private val context: MainActivity) : Fragment() {
                     Log.d("SearchFragment", "Requête de recherche réussie")
                     Log.d("SearchFragment", "Résultats: $genresMovies")
                     showGenreMovie(genresMovies)
+                } else {
+                    // Gérer les erreurs de réponse de l'API
+                }
+            }
+            override fun onFailure(call: Call<SearchResult>, t: Throwable) {
+                // Gérer les erreurs de connexion ou d'exécution de la requête
+            }
+        })
+    }
+    private fun mapMovieToMovieModel(movie: Movie): MovieModel {
+        val partialPosterPath = movie.poster_path
+        val fullPosterPath = "https://image.tmdb.org/t/p/original$partialPosterPath"
+
+        return MovieModel(
+            name = movie.title,
+            description = movie.overview,
+            imageUrl = fullPosterPath,
+            liked = false,
+            releaseDate = movie.release_date,
+            originalLanguage = movie.original_language,
+            voteAverage = movie.vote_average
+        )
+    }
+
+
+    private fun fetchTrendingMovies(langue: String) {
+        val apiKey = "6b20b9e496710f84a435a42ec1086350"
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://api.themoviedb.org/3/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val movieService = retrofit.create(ResearchFragment.MovieApiService::class.java)
+        val call = movieService.getTrendingMovies(apiKey,langue)
+        call.enqueue(object : Callback<SearchResult> {
+            override fun onResponse(call: Call<SearchResult>, response: Response<SearchResult>) {
+                if (response.isSuccessful) {
+                    val searchResult = response.body()
+                    val trendingMovies = searchResult?.results ?: emptyList()
+                    val trendingMovieModels = trendingMovies.map { mapMovieToMovieModel(it) }
+                    updateTrendingMoviesList(trendingMovieModels)
+                    Log.d("SearchFragment", "Requête de recherche réussie")
+                    Log.d("SearchFragment", "Résultats: $trendingMovies")
+                    println("trendingMoviesList: $trendingMoviesList")
+                    println("MoviesList: $movieList")
+
+
                 } else {
                     // Gérer les erreurs de réponse de l'API
                 }

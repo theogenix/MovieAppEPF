@@ -49,6 +49,11 @@ class ResearchFragment : Fragment() {
             @Query("api_key") apiKey: String,
             @Query("with_genres") genreId: Int
         ): Call<SearchResult>
+        @GET("trending/movie/day")
+        fun getTrendingMovies(
+            @Query("api_key") apiKey: String,
+            @Query("language") language: String = "en-US"
+        ): Call<SearchResult>
 
     }
 
