@@ -29,7 +29,7 @@ class MovieAdapter (
         //image du film
         val movieImage=view.findViewById<ImageView>(R.id.image_item)
         val movieName:TextView?=view.findViewById(R.id.name_item)
-        val movieDescription:TextView?=view.findViewById(R.id.description_item)
+        val movieVoteAverage:TextView?=view.findViewById(R.id.vote_average_item)
         val starIcon=view.findViewById<ImageView>(R.id.star_icon)
     }
 
@@ -49,7 +49,7 @@ class MovieAdapter (
         // mettre à jour nom du film
         holder.movieName?.text=currentMovie.name
         // mettre à jour description du film
-        holder.movieDescription?.text=currentMovie.description
+        holder.movieVoteAverage?.text= currentMovie.voteAverage.toString()
         // verifier si le film a ete like ou non
         if (holder.starIcon != null) {
             if (currentMovie.liked){
