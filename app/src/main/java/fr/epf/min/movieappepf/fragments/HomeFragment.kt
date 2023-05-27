@@ -7,10 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.Spinner
+import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
@@ -33,6 +30,8 @@ class HomeFragment(private val context: MainActivity) : Fragment() {
     private lateinit var horizontalRecyclerView: RecyclerView
     private lateinit var verticalRecyclerView: RecyclerView
     private var selectedGenreId: Int = 0
+    private val removedMoviesList = mutableListOf<MovieModel>()
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
@@ -65,9 +64,10 @@ class HomeFragment(private val context: MainActivity) : Fragment() {
         saveButton.setBackgroundColor(Color.TRANSPARENT)
         saveButton.setOnClickListener {
             saveDataToFile()
+            Toast.makeText(requireContext(), "Données sauvegardées.", Toast.LENGTH_SHORT).show()
         }
 
-        println("savedMovies: $savedMovies")
+        //println("savedMovies: $savedMovies")
 
 
         // Liste des films à ajouter au tt début
@@ -76,7 +76,7 @@ class HomeFragment(private val context: MainActivity) : Fragment() {
                 "Star Wars",
                 "A rogue band of resistance fighters unite for a mission to steal the Death Star plans and bring a new hope to the galaxy.",
                 "https://fr.web.img6.acsta.net/pictures/16/10/19/14/33/069648.jpg",
-                false,
+                true,
                 "2016-12-14",
                 "en",
                 5.25
@@ -85,7 +85,7 @@ class HomeFragment(private val context: MainActivity) : Fragment() {
                 "Your name",
                 "High schoolers Mitsuha and Taki are complete strangers living separate lives. But one night, they suddenly switch places. Mitsuha wakes up in Taki’s body, and he in hers. This bizarre occurrence continues to happen randomly, and the two must adjust their lives around each other.",
                 "https://fr.web.img2.acsta.net/pictures/16/12/12/13/49/295774.jpg",
-                false,
+                true,
                 "2016-08-26",
                 "en",
                 8.523
@@ -94,7 +94,7 @@ class HomeFragment(private val context: MainActivity) : Fragment() {
                 "Harry Potter",
                 "Harry Potter has lived under the stairs at his aunt and uncle's house his whole life. But on his 11th birthday, he learns he's a powerful wizard—with a place waiting for him at the Hogwarts School of Witchcraft and Wizardry. As he learns to harness his newfound powers with the help of the school's kindly headmaster, Harry uncovers the truth about his parents' deaths—and about the villain who's to blame.",
                 "https://fr.web.img2.acsta.net/pictures/18/07/02/17/25/3643090.jpg",
-                false,
+                true,
                 "2001-11-16",
                 "en",
                 7.915
@@ -103,7 +103,7 @@ class HomeFragment(private val context: MainActivity) : Fragment() {
                 "Avengers",
                 "When an unexpected enemy emerges and threatens global safety and security, Nick Fury, director of the international peacekeeping agency known as S.H.I.E.L.D., finds himself in need of a team to pull the world back from the brink of disaster. Spanning the globe, a daring recruitment effort begins!",
                 "https://fr.web.img3.acsta.net/medias/nmedia/18/85/31/58/20042068.jpg",
-                false,
+                true,
                 "2012-04-25",
                 "en",
                 7.707
@@ -112,7 +112,7 @@ class HomeFragment(private val context: MainActivity) : Fragment() {
                 "Ice Age",
                 "Manny, Diego, and Sid embark upon another adventure after their continent is set adrift. Using an iceberg as a ship, they encounter sea creatures and battle pirates as they explore a new world.",
                 "https://static.fnac-static.com/multimedia/Images/A8/A8/B1/47/4698536-1505-1505-1/tsp20180314141735/L-Age-De-Glace-4-AFFICHE-CINEMA-ORIGINALE.jpg",
-                false,
+                true,
                 "2012-06-27",
                 "en",
                 6.352
@@ -124,26 +124,29 @@ class HomeFragment(private val context: MainActivity) : Fragment() {
             !movieList.any { movie -> movie.name == savedMovie.name }
         }
         movieList.addAll(moviesToAdd)
-        println("moviesTOadd: $moviesToAdd")
+        //println("moviesTOadd: $moviesToAdd")
 
         // Ajouter uniquement les films qui ne sont pas déjà présents dans la liste
 
         newMovies.forEach { movie ->
             val isMovieAlreadyAdded = movieList.any { it.name == movie.name }
-            if (!isMovieAlreadyAdded) {
+            val isMovieInRemovedList = removedMoviesList.any { it.name == movie.name }
+
+            if (!isMovieAlreadyAdded && !isMovieInRemovedList) {
                 movieList.add(movie)
             }
         }
 
+
         horizontalRecyclerView = view.findViewById(R.id.horizontal_recycler_view)
-        horizontalRecyclerView.adapter = MovieAdapter(context, movieList, R.layout.item_horizontal_movie)
+        horizontalRecyclerView.adapter = MovieAdapter(inflater,context, movieList, R.layout.item_horizontal_movie, removedMoviesList)
 
 
         verticalRecyclerView = view.findViewById(R.id.vertical_recycler_view)
-        verticalRecyclerView.adapter = MovieAdapter(context, trendingMoviesList, R.layout.item_vertical_movie)
+        verticalRecyclerView.adapter = MovieAdapter(inflater,context, trendingMoviesList, R.layout.item_vertical_movie, removedMoviesList)
         verticalRecyclerView.addItemDecoration(MovieItemDecoration())
 
-        println("ma moviesList: $movieList")
+        //println("ma moviesList: $movieList")
 
         return view
     }
@@ -228,9 +231,8 @@ class HomeFragment(private val context: MainActivity) : Fragment() {
     fun updateMovieList(newMovieList: List<MovieModel>) {
         for (newMovie in newMovieList) {
             val existingMovie = movieList.find { it.name == newMovie.name }
-            if (existingMovie == null) {
+            if (existingMovie == null && !removedMoviesList.contains(newMovie)) {
                 movieList.add(newMovie)
-            } else {
             }
         }
 
@@ -238,6 +240,7 @@ class HomeFragment(private val context: MainActivity) : Fragment() {
         verticalRecyclerView.adapter?.notifyDataSetChanged()
         println("updateMovieList")
     }
+
 
 
     private fun fetchMoviesByGenre(genreId: Int) {

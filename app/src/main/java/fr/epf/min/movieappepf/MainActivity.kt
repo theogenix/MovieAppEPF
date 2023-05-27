@@ -38,8 +38,8 @@ class MainActivity : AppCompatActivity() {
                     if (::homeFragment.isInitialized) {
                         homeFragment.updateMovieList(movieList)
                         loadFragment(homeFragment)
-                        println("Les compagnions: $movieList")
-                        println("il passe par update")
+                        //println("Les compagnions: $movieList")
+                        //println("il passe par update")
                     } else {
                         homeFragment = HomeFragment(this)
                         loadFragment(homeFragment)
