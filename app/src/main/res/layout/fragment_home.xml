@@ -7,38 +7,37 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center">
+        android:layout_height="54dp"
+        android:gravity="center"
+        android:orientation="horizontal">
 
-    <Button
-        android:layout_marginTop="5dp"
-        android:id="@+id/genreButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Search by:"
-        android:textAllCaps="false"
-        android:layout_marginLeft="5dp"
-        style="@style/CustomButtonStyle"
-        android:layout_marginBottom="5dp"
-        android:textColor="@color/black"
-        />
+        <Button
+            android:id="@+id/genreButton"
+            style="@style/CustomButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:text="Search by:"
+            android:textAllCaps="false"
+            android:textColor="@color/black" />
+
         <Spinner
             android:id="@+id/spinner"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            />
+            android:layout_height="wrap_content" />
+
         <Button
-            android:layout_marginTop="5dp"
             android:id="@+id/syncroButton"
+            style="@style/CustomButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:text="Sync:"
             android:textAllCaps="false"
-            style="@style/CustomButtonStyle"
-            android:layout_marginBottom="5dp"
-            android:textColor="@color/black"
-            />
+            android:textColor="@color/black" />
     </LinearLayout>
     <TextView
         android:layout_width="wrap_content"
@@ -46,7 +45,6 @@
         android:text="My list:"
         android:layout_marginBottom="5dp"
         android:textStyle="bold"
-        android:layout_marginTop="@dimen/defaultMargin"
         android:layout_marginLeft="@dimen/defaultMargin"
         />
 
