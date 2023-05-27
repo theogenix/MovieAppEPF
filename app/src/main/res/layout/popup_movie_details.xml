@@ -72,7 +72,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/defaultMarginComponent"
-        android:text="date de sortie:"
+        android:text="Release date:"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/popup_movie_description"
         app:layout_constraintTop_toBottomOf="@+id/popup_movie_subtitle" />
@@ -92,7 +92,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/defaultMarginComponent"
         android:textStyle="bold"
-        android:text="langue officielle:"
+        android:text="Original langage:"
         app:layout_constraintStart_toStartOf="@+id/popup_movie_release_date"
         app:layout_constraintTop_toBottomOf="@+id/popup_movie_release_date" />
 
@@ -110,7 +110,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/defaultMarginComponent"
-        android:text="vote de la commu:"
+        android:text="Vote average:"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/popup_movie_orginal_language"
         app:layout_constraintTop_toBottomOf="@+id/popup_movie_orginal_language" />

@@ -2,12 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/home_page"
-        android:title="@string/bottom_home_item"
+        android:title="Home"
         android:icon="@drawable/ic_home"
         />
     <item
         android:id="@+id/search_bar"
-        android:title="@string/bottom_search_item"
+        android:title="Research"
         android:icon="@drawable/ic_search"/>
     <item
         android:id="@+id/qr_code"
