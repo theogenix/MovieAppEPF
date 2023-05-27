@@ -46,7 +46,7 @@ class QrcodeFragment: Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Log.d("QrcodeFragment", "Avant le log D/DecoderThread")
+        //Log.d("QrcodeFragment", "Avant le log D/DecoderThread")
         super.onViewCreated(view, savedInstanceState)
         val scanButton = view.findViewById<Button>(R.id.scanButton)
         scanButton.setOnClickListener {

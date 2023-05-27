@@ -2,8 +2,8 @@
 
 4th year academic project in Kotlin with Android Studio
 
-<img src="![350252201_279160157883126_7054140470246569799_n](https://github.com/theogenix/MovieAppEPF/assets/123560349/8d5d0b61-3855-4c71-9f9f-bef735e72873)
-" width=50% height=50%>
+<img src="350252201_279160157883126_7054140470246569799_n.jpg" alt="Description de l'image" width="300" height="200">
+
 
 
 

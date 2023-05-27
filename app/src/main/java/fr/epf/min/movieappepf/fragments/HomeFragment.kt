@@ -64,7 +64,7 @@ class HomeFragment(private val context: MainActivity) : Fragment() {
         saveButton.setBackgroundColor(Color.TRANSPARENT)
         saveButton.setOnClickListener {
             saveDataToFile()
-            Toast.makeText(requireContext(), "Données sauvegardées.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Data saved.", Toast.LENGTH_SHORT).show()
         }
 
         //println("savedMovies: $savedMovies")
@@ -156,7 +156,7 @@ class HomeFragment(private val context: MainActivity) : Fragment() {
     }
 
     private fun saveDataToFile() {
-        // Sauvegarde des données dans un fichier texte
+        // Sauvegarde les données dans un fichier texte
         val file = File(requireContext().filesDir, "donneesFilm.txt")
         val writer = BufferedWriter(FileWriter(file))
         val gson = Gson()
@@ -229,6 +229,8 @@ class HomeFragment(private val context: MainActivity) : Fragment() {
 
     //update les recyclersviews après avoir rajouté des films dans la liste movieList
     fun updateMovieList(newMovieList: List<MovieModel>) {
+        println("liste de removedMOviesList"+removedMoviesList)
+
         for (newMovie in newMovieList) {
             val existingMovie = movieList.find { it.name == newMovie.name }
             if (existingMovie == null && !removedMoviesList.contains(newMovie)) {
@@ -238,7 +240,7 @@ class HomeFragment(private val context: MainActivity) : Fragment() {
 
         horizontalRecyclerView.adapter?.notifyDataSetChanged()
         verticalRecyclerView.adapter?.notifyDataSetChanged()
-        println("updateMovieList")
+        //println("updateMovieList")
     }
 
 

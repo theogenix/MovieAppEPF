@@ -86,7 +86,7 @@ class MovieAdapter (
             // Toast pour afficher après le retrait du film de la liste
             val removedMovieName = removedMovie.name
             removeMovieFromFile(removedMovieName, context.filesDir)
-            Toast.makeText(holder.itemView.context, "Film retiré : $removedMovieName", Toast.LENGTH_SHORT).show()
+            Toast.makeText(holder.itemView.context, "movie removed : $removedMovieName", Toast.LENGTH_SHORT).show()
         }
 
         holder.itemView.setOnClickListener {
