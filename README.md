@@ -42,3 +42,7 @@ Category-based Movie Search: Users can now search for movies based on specific c
 
 Weekly Movie Recommendations: The application now provides a curated list of recommended movies every week. These recommendations are based on various factors such as user ratings, popularity, and genre preferences. Users can discover new movies and stay updated with the latest releases.
 
+Save Favorite Movie List: Users can now save their favorite movies even after exiting the application. The list of favorite movies will be stored and can be accessed whenever the user returns to the app. This feature allows users to maintain a personalized collection of their preferred movies.
+
+Remove Movies from Favorite List: Users have the option to remove movies from their favorite list. If a movie is no longer a favorite, users can easily remove it from the list to keep their collection up to date with their current preferences.
+
