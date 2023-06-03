@@ -5,7 +5,6 @@
     android:layout_height="500dp"
     android:padding="@dimen/defaultMarginComponent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView2"
         android:layout_width="80dp"
@@ -14,18 +13,14 @@
         app:cardElevation="4dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
         <ImageView
             android:id="@+id/popup_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
             android:src="@drawable/starwars">
-
         </ImageView>
-
     </androidx.cardview.widget.CardView>
-
     <TextView
         android:id="@+id/popup_movie_name"
         android:layout_width="160dp"
@@ -36,7 +31,6 @@
         app:layout_constraintBottom_toBottomOf="@+id/cardView2"
         app:layout_constraintStart_toEndOf="@+id/cardView2"
         app:layout_constraintTop_toTopOf="parent" />
-
     <ImageView
         android:id="@+id/popup_close_button"
         android:layout_width="40dp"
@@ -114,7 +108,6 @@
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/popup_movie_orginal_language"
         app:layout_constraintTop_toBottomOf="@+id/popup_movie_orginal_language" />
-
     <TextView
         android:id="@+id/popup_movie_vote_average"
         android:layout_width="wrap_content"
@@ -123,6 +116,4 @@
         android:layout_marginTop="@dimen/defaultMarginComponent"
         app:layout_constraintStart_toStartOf="@+id/textView4"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

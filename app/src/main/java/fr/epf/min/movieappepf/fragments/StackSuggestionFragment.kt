@@ -1,7 +1,6 @@
 package fr.epf.min.movieappepf.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +14,6 @@ class StackSuggestionFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Utilisation du fichier XML de mise en page "fragment_stack_suggestion"
         return inflater.inflate(R.layout.fragment_stack_suggestion, container, false)
     }
 

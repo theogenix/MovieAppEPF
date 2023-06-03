@@ -9,13 +9,11 @@ import androidx.fragment.app.Fragment
 import fr.epf.min.movieappepf.R
 
 class StackGenreFragment : Fragment() {
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Utilisation du fichier XML de mise en page "fragment_stack_qrcode"
         return inflater.inflate(R.layout.fragment_stack_genre, container, false)
     }
 

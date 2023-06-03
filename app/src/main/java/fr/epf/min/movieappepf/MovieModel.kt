@@ -1,8 +1,5 @@
 package fr.epf.min.movieappepf
 
-import java.io.FileDescriptor
-import java.util.Date
-
 class MovieModel (
     var name:String ="Avengers",
     val description:String="Bon film",

@@ -12,15 +12,12 @@ import fr.epf.min.movieappepf.fragments.QrcodeFragment
 
 
 class MainActivity : AppCompatActivity() {
-
-    //movieList en variable statique
     companion object {
         val movieList = arrayListOf<MovieModel>()
     }
     private lateinit var homeFragment: HomeFragment
 
     private fun loadFragment(fragment: Fragment) {
-        Log.d("MainActivity", "Loading fragment: ${fragment.javaClass.simpleName}")
         val fragmentManager = supportFragmentManager
         fragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
         val transaction = fragmentManager.beginTransaction()
@@ -38,14 +35,11 @@ class MainActivity : AppCompatActivity() {
                     if (::homeFragment.isInitialized) {
                         homeFragment.updateMovieList(movieList)
                         loadFragment(homeFragment)
-                        //println("Les compagnions: $movieList")
-                        //println("il passe par update")
                     } else {
                         homeFragment = HomeFragment(this)
                         loadFragment(homeFragment)
                     }
                     true
-
                 }
                 R.id.search_bar -> {
                     loadFragment(ResearchFragment())

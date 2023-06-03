@@ -3,12 +3,8 @@ package fr.epf.min.movieappepf.fragments
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.os.Handler
-import android.os.HandlerThread
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.SurfaceHolder
-import android.view.SurfaceView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -16,7 +12,6 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.google.zxing.integration.android.IntentIntegrator
 import fr.epf.min.movieappepf.Movie
 import fr.epf.min.movieappepf.R
 import retrofit2.Call
@@ -24,17 +19,13 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-
-import com.google.zxing.BarcodeFormat
 import com.google.zxing.ResultPoint
 import com.journeyapps.barcodescanner.BarcodeCallback
 import com.journeyapps.barcodescanner.BarcodeResult
 import com.journeyapps.barcodescanner.CompoundBarcodeView
 
 class QrcodeFragment: Fragment() {
-
     private lateinit var scannerView: CompoundBarcodeView
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -46,7 +37,6 @@ class QrcodeFragment: Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        //Log.d("QrcodeFragment", "Avant le log D/DecoderThread")
         super.onViewCreated(view, savedInstanceState)
         val scanButton = view.findViewById<Button>(R.id.scanButton)
         scanButton.setOnClickListener {
@@ -87,7 +77,6 @@ class QrcodeFragment: Fragment() {
                     }
                 }
             }
-
             override fun possibleResultPoints(resultPoints: List<ResultPoint>?) {
             }
         })
@@ -117,59 +106,37 @@ class QrcodeFragment: Fragment() {
 
     private fun fetchMovieDetails(movieId: Int) {
         val apiKey = "6b20b9e496710f84a435a42ec1086350"
-
-        // Configurer Retrofit
         val retrofit = Retrofit.Builder()
             .baseUrl("https://api.themoviedb.org/3/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-
-        // Créer une instance de MovieApiService en utilisant retrofit.create()
         val movieDetails = retrofit.create(ResearchFragment.MovieApiService::class.java)
-
-        // Appeler la méthode pour récupérer les détails du film par ID avec la clé d'API et l'ID du film
         val call = movieDetails.getMovieDetails(movieId, apiKey)
-
-        // Exécuter la requête pour récupérer les détails du film par ID
         call.enqueue(object : Callback<Movie> {
             override fun onResponse(call: Call<Movie>, response: Response<Movie>) {
                 if (response.isSuccessful) {
                     val movie = response.body()
-                    // Traiter les détails du film
                     if (movie != null) {
-                        // Les détails du film sont disponibles dans l'objet `movie`
-                        Log.d("SearchFragment", "Requête de recherche réussie")
-                        Log.d("SearchFragment", "Résultats: $movie")
-                        // Appeler la méthode pour afficher les détails du film
                         showQrcodeMovieDetails(movie)
                     }
                 } else {
-                    // Gérer les erreurs de réponse de l'API
                     Log.e("QrcodeFragment", "Erreur de réponse de l'API: ${response.code()}")
                 }
             }
-
             override fun onFailure(call: Call<Movie>, t: Throwable) {
-                // Gérer les erreurs de connexion ou d'exécution de la requête
                 Log.e("QrcodeFragment", "Erreur lors de l'exécution de la requête de recherche: ${t.message}")
             }
         })
     }
 
     private fun showQrcodeMovieDetails(movie: Movie) {
-        // Créer un nouveau fragment StackQrcodeFragment
         val stackQrcodeFragment = StackQrcodeFragment()
-
-        // Ajouter le StackQrcodeFragment dans le fragment_container
         parentFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, stackQrcodeFragment)
             .commit()
-
-        // Ajouter le ResultFragment avec les détails du film dans le StackQrcodeFragment
         val newResultFragment = ResultFragment()
         val bundle = createMovieBundle(movie)
         newResultFragment.arguments = bundle
-
         parentFragmentManager.beginTransaction()
             .add(R.id.stackQrcodeContainer, newResultFragment)
             .commit()

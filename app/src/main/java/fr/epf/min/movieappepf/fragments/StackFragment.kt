@@ -16,13 +16,11 @@ class StackFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Utilisation du fichier XML de mise en page "fragment_stack"
         return inflater.inflate(R.layout.fragment_stack, container, false)
     }
 
     override fun onResume() {
         super.onResume()
-        Log.d("StackFragment", "Nombre de fragments ajoutés : $fragmentCount")
     }
     fun incrementFragmentCount() {
         fragmentCount++

@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- fragment_movie_details.xml -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
-    <!-- Affichage du titre -->
     <TextView
         android:id="@+id/titleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <!-- Affichage de l'affiche du film -->
     <ImageView
         android:id="@+id/posterImageView"
         android:layout_width="250dp"
@@ -42,43 +37,34 @@
         android:layout_marginEnd="16dp"
         />
     </LinearLayout>
-    <!-- Affichage de la description -->
     <TextView
         android:textStyle="bold"
         android:text="Description:"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <!-- Affichage de la description -->
     <TextView
         android:id="@+id/overviewTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium" />
-
-
-    <!-- Affichage de la date de sortie -->
     <TextView
         android:textStyle="bold"
         android:text="Release date:"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall" />
-    <!-- Affichage de la date de sortie -->
     <TextView
         android:id="@+id/releaseDateTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall" />
-
     <TextView
         android:text="Original langage:"
         android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall" />
-
     <TextView
         android:id="@+id/originalLanguageTextView"
         android:layout_width="wrap_content"
@@ -95,8 +81,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <!-- Affichage de la popularité -->
     <TextView
         android:text="Popularity:"
         android:textStyle="bold"
@@ -108,8 +92,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <!-- Affichage du nombre de votes -->
     <TextView
         android:text="Votes:"
         android:textStyle="bold"
@@ -121,8 +103,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <!-- Affichage de la moyenne des votes -->
     <TextView
         android:textStyle="bold"
         android:text="Vote average:"
@@ -134,6 +114,4 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall" />
-
-
 </LinearLayout>

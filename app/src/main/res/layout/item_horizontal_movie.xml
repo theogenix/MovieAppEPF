@@ -7,8 +7,6 @@
     app:cardElevation="5dp"
     android:layout_marginLeft="@dimen/defaultMargin"
     app:cardCornerRadius="20dp">
-
-
     <ImageView
         android:id="@+id/image_item"
         android:layout_width="match_parent"
@@ -16,18 +14,15 @@
         android:scaleType="centerCrop"
         android:src="@drawable/starwars"
         />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="54dp"
         android:orientation="horizontal">
-
         <Button
             android:id="@+id/unfavButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/ic_trashbinbis" />
-
         <ImageView
         android:id="@+id/star_icon"
         android:layout_width="30dp"
@@ -37,5 +32,4 @@
         app:tint="@color/rosepale"
         />
     </LinearLayout>
-
 </androidx.cardview.widget.CardView>

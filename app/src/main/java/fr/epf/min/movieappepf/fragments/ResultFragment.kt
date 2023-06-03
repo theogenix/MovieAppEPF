@@ -1,7 +1,6 @@
 package fr.epf.min.movieappepf.fragments
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.StateListDrawable
 import android.os.Bundle
@@ -15,8 +14,6 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.FitCenter
-import androidx.fragment.app.FragmentActivity
 import fr.epf.min.movieappepf.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -33,14 +30,10 @@ class ResultFragment : Fragment() {
     private lateinit var releaseDateTextView: TextView
     private lateinit var originalLanguageTextView: TextView
     private lateinit var idTextView: TextView
-
-    //private lateinit var genresTextView: TextView
     private lateinit var popularityTextView: TextView
     private lateinit var voteCountTextView: TextView
     private lateinit var voteAverageTextView: TextView
-
     private var isButtonClicked = false
-    //creation de la vue du fragment à partir du xml fragment_results
     @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,65 +47,46 @@ class ResultFragment : Fragment() {
         releaseDateTextView = view.findViewById(R.id.releaseDateTextView)
         originalLanguageTextView = view.findViewById(R.id.originalLanguageTextView)
         idTextView = view.findViewById(R.id.idTextView)
-        //genresTextView = view.findViewById(R.id.genresTextView)
         popularityTextView = view.findViewById(R.id.popularityTextView)
         voteCountTextView = view.findViewById(R.id.voteCountTextView)
         voteAverageTextView = view.findViewById(R.id.voteAverageTextView)
         return view
     }
-
-    //configuration des données du fragment après que la vue a été créée
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // Récupération des données transmises depuis le Bundle
         val title = arguments?.getString("title")
         var posterPath = arguments?.getString("poster_path")
         val overview = arguments?.getString("overview")
         val releaseDate = arguments?.getString("release_date")
         val originalLanguage = arguments?.getString("original_language")
         val id = arguments?.getString("id")
-        //val genres =arguments?.getIntArray("genre_ids")
         val popularity = arguments?.getDouble("popularity")
         val voteCount = arguments?.getInt("vote_count")
         val voteAverage = arguments?.getDouble("vote_average")
-
-
-        // Affichage des données dans les TextView correspondants
         titleTextView.text = title
         overviewTextView.text = overview
         releaseDateTextView.text = releaseDate
         originalLanguageTextView.text = originalLanguage
         idTextView.text = id
-        //genresTextView.text = genres.toString()
         popularityTextView.text = popularity.toString()
         voteCountTextView.text = voteCount.toString()
         voteAverageTextView.text = voteAverage.toString()
-        //println(genres?.joinToString(" "))
-        //println(genres?.size)
 
-        // Chargement de l'image à partir de l'URL du posterPath
         if (!posterPath.isNullOrEmpty()) {
             val fullPosterPath = "https://image.tmdb.org/t/p/original$posterPath"
             Glide.with(requireContext())
                 .load(fullPosterPath)
-                //.transform(FitCenter())
                 .override(500, 500)
                 .centerInside()
                 .into(posterImageView)
         }
-        // Ajout d'un OnClickListener au bouton fav here
         val button = view.findViewById<Button>(R.id.StarButton)
-
         val defaultIcon: Drawable? = ContextCompat.getDrawable(requireContext(), R.drawable.ic_unstar)
         val clickedIcon: Drawable? = ContextCompat.getDrawable(requireContext(), R.drawable.ic_star)
-
         val iconStateList = StateListDrawable()
         iconStateList.addState(intArrayOf(android.R.attr.state_pressed), clickedIcon)
         iconStateList.addState(intArrayOf(), defaultIcon)
-
         button.setCompoundDrawablesWithIntrinsicBounds(iconStateList, null, null, null)
-
         button.setOnClickListener {
             isButtonClicked = !isButtonClicked
             if (isButtonClicked) {
@@ -120,7 +94,6 @@ class ResultFragment : Fragment() {
             } else {
                 button.setCompoundDrawablesWithIntrinsicBounds(defaultIcon, null, null, null)
             }
-
             if (!title.isNullOrEmpty() && !overview.isNullOrEmpty() && !posterPath.isNullOrEmpty()) {
                 posterPath = "https://image.tmdb.org/t/p/original$posterPath"
                 val movie = MovieModel(
@@ -134,10 +107,8 @@ class ResultFragment : Fragment() {
                 )
                 MainActivity.movieList.add(movie)
                 button.isEnabled = false
-                println("result mooviesList: $MainActivity.movieList")
             }
         }
-        // Ajout d'un OnClickListener au bouton suggest here
         val suggestButton = view.findViewById<Button>(R.id.suggestionButton)
         val suggestIcon: Drawable? = ContextCompat.getDrawable(requireContext(), R.drawable.ic_recommendation)
         suggestButton.setCompoundDrawablesWithIntrinsicBounds(suggestIcon, null, null, null)
@@ -149,12 +120,10 @@ class ResultFragment : Fragment() {
 
     private fun fetchMovieRecommendations(movieId: Int) {
         val apiKey = "6b20b9e496710f84a435a42ec1086350"
-
         val retrofit = Retrofit.Builder()
             .baseUrl("https://api.themoviedb.org/3/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-
         val movieService = retrofit.create(ResearchFragment.MovieApiService::class.java)
         val call = movieService.getRecommendations(movieId, apiKey)
         call.enqueue(object : Callback<SearchResult> {
@@ -162,41 +131,29 @@ class ResultFragment : Fragment() {
                 if (response.isSuccessful) {
                     val searchResult = response.body()
                     val recommendedMovies = searchResult?.results ?: emptyList()
-                    Log.d("SearchFragment", "Requête de recherche réussie")
-                    Log.d("SearchFragment", "Résultats: $recommendedMovies")
                     showSuggestionsMovieDetails(recommendedMovies)
                 } else {
-                    // Gérer les erreurs de réponse de l'API
                 }
             }
             override fun onFailure(call: Call<SearchResult>, t: Throwable) {
-                // Gérer les erreurs de connexion ou d'exécution de la requête
             }
         })
     }
     private fun showSuggestionsMovieDetails(movieList: List<Movie>) {
-        // Créer un nouveau fragment StackSuggestionFragment
         val stackSuggestionFragment = StackSuggestionFragment()
-
-        // Ajouter le StackSuggestionFragment dans le fragment_container
         parentFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, stackSuggestionFragment)
             .commit()
-
-        // Ajouter chaque ResultFragment empilé dans le StackSuggestionFragment
         for (movie in movieList) {
             val newResultFragment = ResultFragment()
             val bundle = createMovieBundle(movie)
             newResultFragment.arguments = bundle
-
             parentFragmentManager.beginTransaction()
                 .add(R.id.stackSuggestionContainer, newResultFragment)
-                // Ajouter à la pile arrière
                 .addToBackStack(null)
                 .commit()
         }
     }
-
     private fun createMovieBundle(movie: Movie): Bundle {
         val bundle = Bundle()
         bundle.putString("title", movie.title)
